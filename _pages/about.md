@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: <a href='https://www.panglot.app/' target="_blank">Panglot Labs Ltd. Taiwan Branch</a>
 
 profile:
   align: right

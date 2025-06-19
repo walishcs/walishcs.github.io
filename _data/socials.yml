@@ -2,6 +2,7 @@
 # the commented lines are the default social media links supported by the template
 # the socials will be displayed in the order they are defined here
 
+academia_url: https://nthu.academia.edu/WalisHCS # your Academia.edu profile URL
 # acm_id: # your dl.acm.org/profile/id
 # blogger_url: # your blogger URL
 # bluesky_url: # your bluesky URL
@@ -45,7 +46,7 @@ scholar_userid: D2OS4eUAAAAJ # your Google Scholar ID
 # x_username: # your X handle
 # youtube_id: # your youtube channel id (youtube.com/@<youtube_id>)
 # zotero_username: # your zotero username
-custom_social: # can be any name here other than the ones already defined above
-  logo: assets/img/academia-logo.svg # 使用 academicons 的 academia 圖標
-  title: Academia.edu
-  url: https://nthu.academia.edu/WalisHCS
+# custom_social: # can be any name here other than the ones already defined above
+#  logo: assets/img/academia-logo.svg # 使用 academicons 的 academia 圖標
+#  title: Academia.edu
+#  url: https://nthu.academia.edu/WalisHCS

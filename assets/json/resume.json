@@ -1,61 +1,114 @@
 {
   "basics": {
-    "name": "Albert Einstein",
-    "label": "Scientist",
+    "name": "Walis Hian-chi Song 宋硯之",
+    "label": "Linguist / Instructional Designer",
     "image": "",
-    "email": "albert@einstein.de",
-    "phone": "(912) 123-4567",
-    "url": "https://alshedivat.github.io/al-folio/",
-    "summary": "A German-born theoretical physicist, widely ranked among the greatest and most influential scientists of all time",
+    "email": "walis.hcs@panglotlabs.com",
+    "phone": "",
+    "url": "https://walishcs.github.io/",
+    "summary": "",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
-      "countryCode": "US",
-      "region": "California"
+      "address": "",
+      "postalCode": "",
+      "city": "",
+      "countryCode": "",
+      "region": ""
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "AlbertEinstein",
-        "url": "https://twitter.com/AlbertEinstein"
+        "network": "",
+        "username": "",
+        "url": ""
       }
     ]
   },
   "work": [
     {
-      "name": "Institute for Advanced Study, Princeton University",
-      "position": "Professor of Theoretical Physics",
-      "url": "https://example.com",
-      "startDate": "1933-01-01",
-      "endDate": "1955-01-01",
-      "summary": "Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.",
-      "highlights": ["Relativity"]
+      "name": "Panglot Labs Ltd. Taiwan Branch",
+      "position": "Instructional Designer",
+      "url": "https://www.panglot.app",
+      "startDate": "2025-01-03",
+      "endDate": "present",
+      "summary": "Designing and developing e-learning materials for the under-resourced languages.",
+      "highlights": ["Instructional Design", "E-learning", "Linguistics"]
     }
   ],
   "volunteer": [
     {
-      "organization": "People's Climate March",
-      "location": "Zurich, Switzerland",
-      "position": "Lead Organizer",
-      "url": "https://example.com",
-      "startDate": "2014-04-01",
-      "endDate": "2015-07-01",
-      "summary": "Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.",
-      "highlights": ["Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march.", "Men of the year 2014 by Time magazine"]
+      "organization": "2019 World Indigenous Nations Higher Education Consortium (WINHEC 2019)",
+      "location": "Hualien, Taiwan",
+      "position": "Volunteer",
+      "url": "https://winhec2019.iia.ndhu.edu.tw/",
+      "startDate": "2019-07",
+      "endDate": "2019-08",
+      "summary": "",
+      "highlights": ""
     }
   ],
   "education": [
     {
-      "institution": "University of Zurich, Zurich, Switzerland",
-      "location": "Zurich, Switzerland",
-      "url": "https://www.uzh.ch/",
-      "area": "Software Development",
-      "studyType": "PhD",
-      "startDate": "1905-01-01",
-      "endDate": "1905-01-01",
-      "score": "10",
-      "courses": ["Theory of Relativity"]
+      "institution": "Institute of Linguistics, National Tsing Hua University, Hsinchu, Taiwan",
+      "location": "Hsinchu, Taiwan",
+      "url": "https://ling.site.nthu.edu.tw/",
+      "area": "Linguistics",
+      "studyType": "MA",
+      "startDate": "2022-08",
+      "endDate": "2025-07",
+      "courses": "Thesis topic: Eluw Ndaan Kari Seediq 賽德克語的歷史發展: The Historical Development of the Seediq Language"
+    },
+    {
+      "institution": "Interdisciplinary Program of Humanities and Social Sciences, National Tsing Hua University, Hsinchu, Taiwan",
+      "location": "Hsinchu, Taiwan",
+      "url": "https://dhss.site.nthu.edu.tw/",
+      "area": "Linguistics",
+      "studyType": "BA",
+      "startDate": "2018-08",
+      "endDate": "2022-06"
+    },
+    {
+      "institution": "National Tainan First Senior High School",
+      "location": "Tainan, Taiwan",
+      "url": "https://www.tnfsh.tn.edu.tw/",
+      "area": "",
+      "studyType": "Senior High School",
+      "startDate": "2015-08",
+      "endDate": "2018-06"
+    },
+    {
+      "institution": "Tainan Municipal Jiansing Junior High School",
+      "location": "Tainan, Taiwan",
+      "url": "https://www.csjh.tn.edu.tw/",
+      "area": "",
+      "studyType": "Junior High School",
+      "startDate": "2012-08",
+      "endDate": "2015-06"
+    },
+    {
+      "institution": "Tainan Municipal East District Shengli Elementary School",
+      "location": "Tainan, Taiwan",
+      "url": "https://www.slps.tn.edu.tw/",
+      "area": "",
+      "studyType": "Elementary School",
+      "startDate": "2006-08",
+      "endDate": "2012-06"
+    },
+    {
+      "institution": "Chang Jung Kindergarten",
+      "location": "Tainan, Taiwan",
+      "url": "",
+      "area": "",
+      "studyType": "Kindergarten",
+      "startDate": "2005",
+      "endDate": "2006"
+    },
+    {
+      "institution": "Ayeyou Kindergarten",
+      "location": "Tainan, Taiwan",
+      "url": "",
+      "area": "",
+      "studyType": "Kindergarten",
+      "startDate": "2002?",
+      "endDate": "2005"
     }
   ],
   "awards": [
@@ -113,25 +166,60 @@
   ],
   "publications": [
     {
-      "name": "Zur Elektrody/namik bewegter Körper",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-06-30",
-      "url": "https://en.wikisource.org/wiki/Translation:On_the_Electrodynamics_of_Moving_Bodies",
-      "summary": "It concerned an interpretation of the Michelson–Morley experiment and the properties of light and time. Special relativity incorporates the principle that the speed of light is the same for all inertial observers regardless of the state of motion of the source."
+      "name": "Regional Wanderwörter of Formosan Languages in Northwestern Taiwan: A Case Study of Some Plant Names",
+      "publisher": "34th Annual Meeting of the Southeast Asian Linguistics Society (SEALS 34)",
+      "releaseDate": "2025",
+      "url": "https://www.academia.edu/130041367/Regional_Wanderw%C3%B6rter_of_Formosan_Languages_in_Northwestern_Taiwan_A_Case_Study_of_Some_Plant_Names",
+      "summary": "Bali, Indonesia. (co-authored with Pan, Samuel Yu-hsiang)"
     },
     {
-      "name": "Über einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1905-03-18",
-      "url": "https://de.wikisource.org/wiki/Über_einen_die_Erzeugung_und_Verwandlung_des_Lichtes_betreffenden_heuristischen_Gesichtspunkt",
-      "summary": "In the second paper, he applied the quantum theory to light to explain the photoelectric effect. In particular, he used the idea of light quanta (photons) to explain experimental results, but stressed the importance of the experimental results. The importance of his work on the photoelectric effect earned him the Nobel Prize in Physics in 1921."
+      "name": "Allophonic variations of Proto-Atayal *g",
+      "publisher": "34th Annual Meeting of the Southeast Asian Linguistics Society (SEALS 34)",
+      "releaseDate": "2025",
+      "url": "https://www.academia.edu/129996380/Allophonic_variations_of_Proto_Atayal_g",
+      "summary": "Bali, Indonesia."
     },
     {
-      "name": "Die Grundlage der allgemeinen Relativitätstheorie",
-      "publisher": "Annalen der Physik",
-      "releaseDate": "1916-03-20",
-      "url": "https://de.wikisource.org/wiki/Die_Grundlage_der_allgemeinen_Relativitätstheorie",
-      "summary": "The publication of the theory of general relativity made him internationally famous. He was professor of physics at the universities of Zurich (1909–1911) and Prague (1911–1912), before he returned to ETH Zurich (1912–1914)."
+      "name": "Sàidékèyǔ de lìshǐ céngcì wèntí: Cóng yuánshǐnándǎoyǔ *q de fǎnyìng chūfā 賽德克語的歷史層次問題：從原始南島語 *q 的反映出發 [Historical Strata in Seediq --- Examined Through the Reflexes of Proto-Austronesian *q]",
+      "publisher": "25th National Conference on Linguistics (NCL 2024)",
+      "releaseDate": "2024",
+      "url": "https://www.academia.edu/125421745/Historical_Strata_in_Seediq_Examined_Through_the_Reflexes_of_Proto_Austronesian_q_%E8%B3%BD%E5%BE%B7%E5%85%8B%E8%AA%9E%E7%9A%84%E6%AD%B7%E5%8F%B2%E5%B1%A4%E6%AC%A1%E5%95%8F%E9%A1%8C_%E5%BE%9E%E5%8E%9F%E5%A7%8B%E5%8D%97%E5%B3%B6%E8%AA%9E_q_%E7%9A%84%E5%8F%8D%E6%98%A0%E5%87%BA%E7%99%BC",
+      "summary": "National Tsinghua University, Hsinchu, Taiwan. [in Chinese]"
+    },
+    {
+      "name": "Morphophonological alternations of stems with final /g/ in Tgdaya Seediq: An OT account",
+      "publisher": "16th International Conference on Austronesian Linguistics (16-ICAL)",
+      "releaseDate": "2024",
+      "url": "https://www.academia.edu/121584052/Morphophonological_alternations_of_stems_with_final_%C9%A1_in_Tgdaya_Seediq_An_OT_account",
+      "summary": "De La Salle University, Manila, The Philippines. (co-authored with Pan, Samuel Yu-hsiang)"
+    },
+    {
+      "name": "Proto-Atayalic *g Revisited: A Mess",
+      "publisher": "16th International Conference on Austronesian Linguistics (16-ICAL)",
+      "releaseDate": "2024",
+      "url": "https://www.academia.edu/121584636/Proto_Atayalic_g_Revisited_A_Mess",
+      "summary": "De La Salle University, Manila, The Philippines."
+    },
+    {
+      "name": "The Mystery of Atayalic /x/: An Exploration of Its Origin",
+      "publisher": "33rd Annual Meeting of the Southeast Asian Linguistics Society (SEALS 33)",
+      "releaseDate": "2024",
+      "url": "https://www.academia.edu/121584739/The_mystery_of_Atayalic_x_An_exploration_of_its_origins",
+      "summary": "National Tsinghua University, Hsinchu, Taiwan."
+    },
+    {
+      "name": "Deconstructing Proto-Atayalic *g'",
+      "publisher": "32nd Annual Meeting of the Southeast Asian Linguistics Society (SEALS 32)",
+      "releaseDate": "2023",
+      "url": "https://www.academia.edu/98788761/Deconstructing_Proto_Atayalic_g",
+      "summary": "Chiang Mai University, Chiang Mai, Thailand."
+    },
+    {
+      "name": "Zàilùn yuánshǐtàiyǎ-sàidékèyǔ (Proto-Atayalic) zhōng de *-d 再論原始泰雅-賽德克語（Proto-Atayalic）中的 *-d (Revisiting Proto-Atayalic Final *-d)",
+      "publisher": "6th Undergraduate Academic Conference on Humanities",
+      "releaseDate": "2022",
+      "url": "https://www.academia.edu/77328582/%E5%86%8D%E8%AB%96%E5%8E%9F%E5%A7%8B%E6%B3%B0%E9%9B%85_%E8%B3%BD%E5%BE%B7%E5%85%8B%E8%AA%9E_Proto_Atayalic_%E4%B8%AD%E7%9A%84_d_Revisiting_Proto_Atayalic_Final_d_",
+      "summary": "The Education University of Hong Kong, Tai Po, Hong Kong. [in Chinese]"
     }
   ],
   "skills": [
@@ -151,13 +239,13 @@
   ],
   "languages": [
     {
-      "language": "German",
+      "language": "Taiwanese Mandarin",
       "fluency": "Native speaker",
       "icon": ""
     },
     {
-      "language": "English",
-      "fluency": "Fluent",
+      "language": "Taiwanese",
+      "fluency": "Heritage language",
       "icon": ""
     }
   ],
@@ -175,18 +263,18 @@
       ]
     }
   ],
-  "references": [
-    {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-laptop",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    },
-    {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-thumbtack",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    }
-  ],
+  // "references": [
+  //   {
+  //     "name": "Professor John Doe",
+  //     "icon": "fa-solid fa-laptop",
+  //     "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+  //   },
+  //   {
+  //     "name": "Professor John Doe",
+  //     "icon": "fa-solid fa-thumbtack",
+  //     "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
+  //   }
+  // ],
   "projects": [
     {
       "name": "Quantum Computing",

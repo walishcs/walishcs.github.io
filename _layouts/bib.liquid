@@ -41,6 +41,15 @@
             alt=entry.preview
           %}
         {% endif %}
+      {% else %}
+        <!-- 
+        當沒有 preview 圖片時顯示文件 emoji 作為替代
+        原本的寫法：只有當 entry.preview 存在時才顯示圖片，沒有圖片時不顯示任何內容
+        修改目的：保持版面一致性，避免因為缺少圖片而產生的空白區域
+        -->
+        <div class="preview-placeholder z-depth-1 rounded d-flex align-items-center justify-content-center" style="width: 120px; height: 90px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
+          <span style="font-size: 2rem;">📄</span>
+        </div>
       {% endif %}
     </div>
   {% endif %}

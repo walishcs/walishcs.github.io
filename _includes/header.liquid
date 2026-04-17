@@ -57,9 +57,14 @@
           </li>
 
           <!-- Other pages -->
-          {% assign sorted_pages = site.pages | sort: 'nav_order' %}
-          {% for p in sorted_pages %}
-            {% if p.nav and p.autogen == null %}
+          {% assign nav_pages = site.pages | where_exp: "item", "item.nav == true and item.autogen == nil" %}
+          {% assign nav_pages = nav_pages | sort: 'nav_order' %}
+          {% assign custom_nav_links = site.custom_nav_links %}
+          {% if custom_nav_links == nil %}
+            {% assign custom_nav_links = '' | split: '' %}
+          {% endif %}
+          {% assign nav_items = nav_pages | concat: custom_nav_links | sort: 'nav_order' %}
+          {% for p in nav_items %}
               {% if p.dropdown %}
                 {% assign has_active_child = false %}
                 {% for child in p.children %}
@@ -98,24 +103,41 @@
                   </div>
                 </li>
               {% else %}
-                {% assign parent_link = p.permalink | remove: 'index.html' %}
+                {% assign is_custom_link = false %}
+                {% if p.permalink == nil and p.url != nil and p.title != nil %}
+                  {% assign is_custom_link = true %}
+                {% endif %}
+                {% if is_custom_link %}
+                  {% assign parent_link = p.url %}
+                {% else %}
+                  {% assign parent_link = p.permalink | remove: 'index.html' %}
+                {% endif %}
                 <li class="nav-item {% if page.url contains parent_link %}active{% endif %}">
-                  {%- if p.permalink contains '://' -%}
+                  {%- if is_custom_link -%}
+                    {%- assign url = p.url -%}
+                  {%- elsif p.permalink contains '://' -%}
                     {%- assign url = p.permalink -%}
                   {%- elsif p.permalink contains '/blog/' -%}
                     {%- assign url = '/blog/' -%}
                   {%- else -%}
                     {%- assign url = p.url -%}
                   {%- endif %}
-                  <a class="nav-link" href="{{ url | relative_url }}">
+                  {%- assign is_external_url = false -%}
+                  {%- if url contains '://' -%}
+                    {%- assign is_external_url = true -%}
+                  {%- endif -%}
+                  <a
+                    class="nav-link"
+                    href="{% if is_external_url %}{{ url }}{% else %}{{ url | relative_url }}{% endif %}"
+                    {% if p.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                  >
                     {{- p.title }}
-                    {% if page.url contains p.url %}
+                    {% if is_external_url == false and page.url contains parent_link %}
                       <span class="sr-only">(current)</span>
                     {% endif %}
                   </a>
                 </li>
               {% endif %}
-            {% endif %}
           {% endfor %}
           {% if site.search_enabled %}
             <!-- Search -->

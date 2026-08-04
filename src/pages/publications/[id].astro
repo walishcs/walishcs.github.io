@@ -1,0 +1,78 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { labelFromSlug } from '@/lib/format';
+
+export async function getStaticPaths() {
+  const publications = await getCollection('publications');
+  return publications.map((publication) => ({
+    params: { id: publication.id },
+    props: { publication },
+  }));
+}
+
+interface Props {
+  publication: CollectionEntry<'publications'>;
+}
+
+const { publication } = Astro.props;
+const { data } = publication;
+const doiUrl = data.doi
+  ? data.doi.startsWith('http')
+    ? data.doi
+    : `https://doi.org/${data.doi}`
+  : null;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: data.title,
+  author: data.authors.map((name) => ({ '@type': 'Person', name })),
+  datePublished: String(data.year),
+  isPartOf: data.venue || undefined,
+  abstract: data.abstract || undefined,
+  sameAs: doiUrl || undefined,
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.abstract || undefined}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="detail-header">
+      <p class="eyebrow">{labelFromSlug(data.type)}</p>
+      <h1>{data.title}</h1>
+      <p class="detail-summary">{data.authors.join(', ')}</p>
+      <p class="detail-meta">{data.year}{data.venue && ` · ${data.venue}`}</p>
+      {
+        (doiUrl || data.links.length > 0) && (
+          <ul class="detail-links" aria-label="Publication links">
+            {doiUrl && (
+              <li>
+                <a href={doiUrl} rel="noreferrer" target="_blank">
+                  DOI
+                </a>
+              </li>
+            )}
+            {data.links.map((link) => (
+              <li>
+                <a href={link.url} rel="noreferrer" target="_blank">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+    {
+      data.abstract && (
+        <section class="prose" aria-labelledby="abstract">
+          <h2 id="abstract">Abstract</h2>
+          <p>{data.abstract}</p>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>

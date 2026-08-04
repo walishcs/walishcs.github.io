@@ -1,0 +1,39 @@
+---
+import { ContentCardGrid } from '@/components/ContentCardGrid';
+import { EmptyState } from '@/components/EmptyState';
+import PageHeader from '@/components/PageHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublishedPosts } from '@/lib/collections';
+import { formatDate } from '@/lib/format';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Essays, notes, and updates on research and practice."
+>
+  <PageHeader
+    eyebrow="Writing"
+    title="Blog"
+    description="Essays, notes, and updates on research and practice."
+  />
+  {
+    posts.length ? (
+      <ContentCardGrid
+        items={posts.map((entry) => ({
+          href: `/blog/${entry.id}/`,
+          title: entry.data.title,
+          summary: entry.data.excerpt,
+          meta: formatDate(entry.data.publishedAt),
+          badge: entry.data.tags[0],
+        }))}
+      />
+    ) : (
+      <EmptyState
+        title="No published posts yet"
+        message="Writing will appear here when published."
+      />
+    )
+  }
+</BaseLayout>

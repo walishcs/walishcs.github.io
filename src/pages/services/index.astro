@@ -1,0 +1,35 @@
+---
+import { ContentCardGrid } from '@/components/ContentCardGrid';
+import { EmptyState } from '@/components/EmptyState';
+import PageHeader from '@/components/PageHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getActiveServices } from '@/lib/collections';
+
+const services = await getActiveServices();
+---
+
+<BaseLayout title="Services" description="Research and professional services.">
+  <PageHeader
+    eyebrow="Practice"
+    title="Services"
+    description="Research and professional services."
+  />
+  {
+    services.length ? (
+      <ContentCardGrid
+        items={services.map((entry) => ({
+          href: `/services/${entry.id}/`,
+          title: entry.data.title,
+          summary: entry.data.summary,
+          meta: entry.data.audience ? `For ${entry.data.audience}` : undefined,
+          badge: 'Service',
+        }))}
+      />
+    ) : (
+      <EmptyState
+        title="No active services yet"
+        message="Available services will appear here when they are added."
+      />
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getActiveServices } from '@/lib/collections';
+
+export async function getStaticPaths() {
+  const services = await getActiveServices();
+  return services.map((service) => ({
+    params: { id: service.id },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+---
+
+<BaseLayout
+  title={service.data.title}
+  description={service.data.summary || undefined}
+>
+  <article>
+    <header class="detail-header">
+      <p class="eyebrow">Service</p>
+      <h1>{service.data.title}</h1>
+      {
+        service.data.summary && (
+          <p class="detail-summary">{service.data.summary}</p>
+        )
+      }
+      {
+        service.data.audience && (
+          <p class="detail-meta">For {service.data.audience}</p>
+        )
+      }
+    </header>
+    {
+      service.data.deliverables.length > 0 && (
+        <section class="deliverables" aria-labelledby="deliverables">
+          <h2 id="deliverables">Deliverables</h2>
+          <ul>
+            {service.data.deliverables.map((deliverable) => (
+              <li>{deliverable}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>

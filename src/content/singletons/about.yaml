@@ -1,0 +1,33 @@
+heading: About Me
+portrait: /images/about/portrait.jpg
+biography: >-
+  I am a linguist specializing in Austronesian historical linguistics, with a
+  particular focus on the Seediq and Atayal (i.e. Atayalic languages). My
+  research explores historical reconstruction, language change, and digital
+  approaches to language documentation and education.
+affiliations:
+  - name: Panglot Languages
+    role: Linguist
+    url: https://panglotlanguages.com/
+    startDate: 2025-01
+    current: true
+  - name: Ren'ai Township Public Health Center
+    role: Alternative military serviceman
+    url: https://www.ntshb.gov.tw/center/index?m1=33
+    startDate: 2026-01
+    endDate: 2026-06
+    current: false
+education:
+  - institution: Institute of Linguistics, National Tsing Hua University, Taiwan
+    degree: M.A.
+    field: Linguistics
+    url: https://ling.site.nthu.edu.tw/index.php?Lang=en
+    startDate: 2022-09
+    endDate: 2025-02
+    current: false
+researchInterests:
+  - Seediq
+  - Atayal
+  - Historical Linguistics
+  - Austronesian Languages
+contactNote: Feel free to mail me!

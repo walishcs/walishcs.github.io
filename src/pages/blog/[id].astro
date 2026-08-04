@@ -1,0 +1,60 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublishedPosts } from '@/lib/collections';
+import { formatDate } from '@/lib/format';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.excerpt || undefined,
+  datePublished: post.data.publishedAt,
+  image: post.data.cover || undefined,
+  mainEntityOfPage: Astro.url.href,
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.excerpt || undefined}
+  image={post.data.cover}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="detail-header">
+      <p class="eyebrow">Writing</p>
+      <h1>{post.data.title}</h1>
+      <time class="detail-meta" datetime={post.data.publishedAt}>
+        {formatDate(post.data.publishedAt)}
+      </time>
+      {post.data.excerpt && <p class="detail-summary">{post.data.excerpt}</p>}
+      {
+        post.data.tags.length > 0 && (
+          <ul class="tag-list" aria-label="Tags">
+            {post.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+    {
+      post.data.cover && (
+        <img class="detail-cover" src={post.data.cover} alt="" />
+      )
+    }
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>

@@ -1,6 +1,47 @@
 {
+  "name": "walishcs-academic-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "astryx": {
+    "theme": "stone"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "cross-env SKIP_KEYSTATIC=true astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "astryx": "astryx"
+  },
+  "dependencies": {
+    "@astrojs/markdoc": "2.0.6",
+    "@astrojs/react": "6.0.2",
+    "@astrojs/sitemap": "3.7.3",
+    "@astryxdesign/core": "0.2.0",
+    "@astryxdesign/theme-stone": "0.2.0",
+    "@keystatic/astro": "5.2.0",
+    "@keystatic/core": "0.6.4",
+    "@stylexjs/stylex": "0.19.0",
+    "astro": "7.1.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "1.4.0",
-    "prettier": "3.1.1"
+    "@astrojs/check": "0.9.6",
+    "@astryxdesign/cli": "0.2.0",
+    "@types/node": "24.10.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "cross-env": "10.1.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
   }
 }

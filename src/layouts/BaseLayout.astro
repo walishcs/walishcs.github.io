@@ -1,0 +1,380 @@
+---
+import { ThemeRoot } from '@/components/ThemeRoot';
+import { getSiteSettings } from '@/lib/site-content';
+import type { TransitionDirectionalAnimations } from 'astro';
+import { ClientRouter } from 'astro:transitions';
+import '@astryxdesign/core/reset.css';
+import '@astryxdesign/core/astryx.css';
+import '@astryxdesign/theme-stone/theme.css';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string | null;
+  canonicalPath?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const settings = await getSiteSettings();
+const {
+  title,
+  description = settings.description,
+  image = settings.socialImage,
+  canonicalPath = Astro.url.pathname,
+  jsonLd,
+} = Astro.props;
+const pageTitle = title ? `${title} · ${settings.name}` : settings.name;
+const canonical = new URL(canonicalPath, Astro.site ?? Astro.url.origin).href;
+const socialImage = image
+  ? new URL(image, Astro.site ?? Astro.url.origin).href
+  : undefined;
+const currentPath = Astro.url.pathname;
+const copyrightStartYear = 2026;
+const buildDateParts = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Taipei',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+  .formatToParts(new Date())
+  .reduce<Record<string, string>>((parts, part) => {
+    if (part.type !== 'literal') parts[part.type] = part.value;
+    return parts;
+  }, {});
+const buildYear = Number(buildDateParts.year);
+const copyrightYears =
+  buildYear > copyrightStartYear
+    ? `${copyrightStartYear}–${buildYear}`
+    : `${copyrightStartYear}`;
+const lastUpdated = `${buildDateParts.year}/${buildDateParts.month}/${buildDateParts.day}`;
+const lastUpdatedIso = `${buildDateParts.year}-${buildDateParts.month}-${buildDateParts.day}`;
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About' },
+  { href: '/publications/', label: 'Publications' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/services/', label: 'Services' },
+];
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: settings.name,
+  jobTitle: settings.title || undefined,
+  email: settings.email ? `mailto:${settings.email}` : undefined,
+  url: new URL('/', Astro.site ?? Astro.url.origin).href,
+  sameAs: settings.socialLinks.map((link) => link.url),
+};
+const structuredData = jsonLd
+  ? [personJsonLd, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])]
+  : [personJsonLd];
+const serializedJsonLd = JSON.stringify(structuredData).replaceAll(
+  '<',
+  '\\u003c',
+);
+const pageTransition: TransitionDirectionalAnimations = {
+  forwards: {
+    old: {
+      name: 'sitePageOut',
+      duration: 'var(--duration-fast)',
+      easing: 'var(--ease-standard)',
+      fillMode: 'both',
+    },
+    new: {
+      name: 'sitePageIn',
+      delay: 'var(--duration-fast)',
+      duration: 'var(--duration-medium)',
+      easing: 'var(--ease-standard)',
+      fillMode: 'both',
+    },
+  },
+  backwards: {
+    old: {
+      name: 'sitePageOut',
+      duration: 'var(--duration-fast)',
+      easing: 'var(--ease-standard)',
+      fillMode: 'both',
+    },
+    new: {
+      name: 'sitePageIn',
+      delay: 'var(--duration-fast)',
+      duration: 'var(--duration-medium)',
+      easing: 'var(--ease-standard)',
+      fillMode: 'both',
+    },
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✦</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=TASA+Explorer:wght@800&display=swap"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    <meta
+      name="twitter:card"
+      content={socialImage ? 'summary_large_image' : 'summary'}
+    />
+    <title>{pageTitle}</title>
+    <ClientRouter />
+    <script is:inline>
+      (() => {
+        try {
+          const mode = localStorage.getItem('theme-mode');
+          if (mode === 'light' || mode === 'dark')
+            document.documentElement.dataset.theme = mode;
+        } catch {
+          // The system preference remains the default when storage is unavailable.
+        }
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={serializedJsonLd} />
+  </head>
+  <body>
+    <ThemeRoot>
+      <a class="skip-link" href="#main-content">Skip to content</a>
+      <header class="site-header">
+        <div class="header-inner">
+          <a
+            class="site-identity"
+            href="/"
+            aria-label={`${settings.name} home`}
+          >
+            <span class="site-mark" aria-hidden="true">✦</span>
+            <span>
+              <strong>{settings.name}</strong>
+              {settings.title && <small>{settings.title}</small>}
+            </span>
+          </a>
+          <nav aria-label="Primary navigation">
+            <ul>
+              {
+                navItems.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      aria-current={
+                        item.href === '/'
+                          ? currentPath === '/'
+                            ? 'page'
+                            : undefined
+                          : currentPath.startsWith(item.href)
+                            ? 'page'
+                            : undefined
+                      }
+                    >
+                      <span class="nav-label">{item.label}</span>
+                      <span class="nav-indicator" aria-hidden="true" />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Switch to dark mode"
+            title="Switch to dark mode"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="theme-toggle-icon lucide lucide-moon p3nfvp2"
+              data-theme-icon="dark"
+              data-active="true"
+              aria-hidden="true"
+            >
+              <path
+                d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+              ></path>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="theme-toggle-icon lucide lucide-sun p3nfvp2"
+              data-theme-icon="light"
+              data-active="false"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+      <main
+        id="main-content"
+        class="site-main"
+        transition:name="page-content"
+        transition:animate={pageTransition}
+      >
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div>
+            <strong>{settings.name}</strong>
+            {settings.location && <p>{settings.location}</p>}
+          </div>
+          <div class="footer-links">
+            {
+              settings.email && (
+                <a href={`mailto:${settings.email}`}>{settings.email}</a>
+              )
+            }
+            {
+              settings.socialLinks.map((link) => (
+                <a href={link.url} rel="me noreferrer" target="_blank">
+                  {link.label}
+                </a>
+              ))
+            }
+          </div>
+          <div class="footer-note">
+            <p>
+              © {copyrightYears} Walis Hian-chi Song, Built with{' '}
+              <a href="https://astro.build/" rel="noreferrer" target="_blank"
+                >Astro</a
+              >,{' '}
+              <a href="https://react.dev/" rel="noreferrer" target="_blank"
+                >React</a
+              >,{' '}
+              <a
+                href="https://astryx.atmeta.com/"
+                rel="noreferrer"
+                target="_blank">Astryx</a
+              >, and{' '}
+              <a href="https://keystatic.com/" rel="noreferrer" target="_blank"
+                >Keystatic</a
+              >.
+            </p>
+            <p>
+              Site last updated <time datetime={lastUpdatedIso}
+                >{lastUpdated}</time
+              >
+            </p>
+          </div>
+        </div>
+      </footer>
+    </ThemeRoot>
+    <script>
+      type ThemeMode = 'system' | 'light' | 'dark';
+
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+      const isMode = (value: string | null): value is ThemeMode =>
+        value === 'system' || value === 'light' || value === 'dark';
+      let preference: ThemeMode = 'system';
+
+      function resolvedTheme(): 'light' | 'dark' {
+        if (preference !== 'system') return preference;
+        return systemTheme.matches ? 'dark' : 'light';
+      }
+
+      function applyThemeMode() {
+        if (preference === 'system')
+          document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.dataset.theme = preference;
+
+        const targetTheme = resolvedTheme() === 'dark' ? 'light' : 'dark';
+        const label = `Switch to ${targetTheme} mode`;
+        const toggle = document.querySelector<HTMLButtonElement>(
+          '[data-theme-toggle]',
+        );
+        if (!toggle) return;
+
+        toggle.dataset.targetTheme = targetTheme;
+        toggle.setAttribute('aria-label', label);
+        toggle.title = label;
+
+        toggle
+          .querySelectorAll<SVGElement>('[data-theme-icon]')
+          .forEach((icon) => {
+            icon.dataset.active = String(
+              icon.dataset.themeIcon === targetTheme,
+            );
+          });
+      }
+
+      function initializeThemeToggle() {
+        try {
+          const storedMode = window.localStorage.getItem('theme-mode');
+          if (isMode(storedMode)) preference = storedMode;
+        } catch {
+          // Storage may be unavailable in privacy-restricted browsing contexts.
+        }
+        applyThemeMode();
+
+        const toggle = document.querySelector<HTMLButtonElement>(
+          '[data-theme-toggle]',
+        );
+        if (!toggle || toggle.dataset.themeBound === 'true') return;
+        toggle.dataset.themeBound = 'true';
+        toggle.addEventListener('click', () => {
+          const targetTheme = toggle.dataset.targetTheme ?? null;
+          if (targetTheme !== 'light' && targetTheme !== 'dark') return;
+          preference = targetTheme;
+          applyThemeMode();
+          try {
+            window.localStorage.setItem('theme-mode', preference);
+          } catch {
+            // The visible preference still applies for the current page.
+          }
+        });
+      }
+
+      systemTheme.addEventListener('change', () => {
+        if (preference === 'system') applyThemeMode();
+      });
+
+      document.addEventListener('astro:before-swap', (event) => {
+        if (preference === 'system')
+          event.newDocument.documentElement.removeAttribute('data-theme');
+        else event.newDocument.documentElement.dataset.theme = preference;
+      });
+      document.addEventListener('astro:page-load', initializeThemeToggle);
+      initializeThemeToggle();
+    </script>
+  </body>
+</html>

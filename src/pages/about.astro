@@ -1,0 +1,163 @@
+---
+import { EmptyState } from '@/components/EmptyState';
+import PageHeader from '@/components/PageHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAboutContent, getSiteSettings } from '@/lib/site-content';
+
+const [about, settings] = await Promise.all([
+  getAboutContent(),
+  getSiteSettings(),
+]);
+const formatPeriod = (startDate: string, endDate: string, current: boolean) => {
+  if (startDate && (current || endDate))
+    return `${startDate} – ${current ? 'Present' : endDate}`;
+  if (current) return startDate ? `${startDate} – Present` : 'Present';
+  return startDate || endDate;
+};
+const hasContent = Boolean(
+  about.portrait ||
+    about.introduction ||
+    about.biography ||
+    about.affiliations.length ||
+    about.education.length ||
+    about.researchInterests.length ||
+    about.contactNote ||
+    settings.email,
+);
+---
+
+<BaseLayout title="About" description={about.introduction || undefined}>
+  <PageHeader
+    class="about-page-header"
+    eyebrow="Profile"
+    title={about.heading || 'About'}
+    description={about.introduction}
+  />
+
+  {
+    hasContent ? (
+      <div class="about-layout">
+        {about.portrait && (
+          <img
+            class="about-portrait"
+            src={about.portrait}
+            alt={`Portrait of ${settings.name}`}
+            width="720"
+            height="900"
+          />
+        )}
+        <div class="about-grid">
+          {about.biography && (
+            <section aria-labelledby="biography">
+              <h2 id="biography">Biography</h2>
+              <p class="biography-copy preserve-lines">{about.biography}</p>
+            </section>
+          )}
+          {about.affiliations.length > 0 && (
+            <section aria-labelledby="affiliations">
+              <h2 id="affiliations">Affiliations</h2>
+              <ul class="plain-list timeline-list">
+                {about.affiliations.map((affiliation) => {
+                  const period = formatPeriod(
+                    affiliation.startDate,
+                    affiliation.endDate,
+                    affiliation.current,
+                  );
+
+                  return (
+                    <li>
+                      <div>
+                        {affiliation.url ? (
+                          <a
+                            class="about-entry-name"
+                            href={affiliation.url}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {affiliation.name}
+                          </a>
+                        ) : (
+                          <strong class="about-entry-name">
+                            {affiliation.name}
+                          </strong>
+                        )}
+                        {affiliation.role && <span> — {affiliation.role}</span>}
+                      </div>
+                      {period && <p class="about-period">{period}</p>}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+          {about.education.length > 0 && (
+            <section aria-labelledby="education">
+              <h2 id="education">Education</h2>
+              <ul class="plain-list timeline-list">
+                {about.education.map((education) => {
+                  const period = formatPeriod(
+                    education.startDate,
+                    education.endDate,
+                    education.current,
+                  );
+                  const qualification = [education.degree, education.field]
+                    .filter(Boolean)
+                    .join(', ');
+
+                  return (
+                    <li>
+                      <div>
+                        {education.url ? (
+                          <a
+                            class="about-entry-name"
+                            href={education.url}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {education.institution}
+                          </a>
+                        ) : (
+                          <strong class="about-entry-name">
+                            {education.institution}
+                          </strong>
+                        )}
+                        {qualification && <span> — {qualification}</span>}
+                      </div>
+                      {period && <p class="about-period">{period}</p>}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+          {about.researchInterests.length > 0 && (
+            <section aria-labelledby="research-interests">
+              <h2 id="research-interests">Research interests</h2>
+              <ul class="tag-list">
+                {about.researchInterests.map((interest) => (
+                  <li>{interest}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {(about.contactNote || settings.email) && (
+            <section aria-labelledby="contact">
+              <h2 id="contact">Contact</h2>
+              {about.contactNote && (
+                <p class="preserve-lines">{about.contactNote}</p>
+              )}
+              {settings.email && (
+                <a href={`mailto:${settings.email}`}>{settings.email}</a>
+              )}
+            </section>
+          )}
+        </div>
+      </div>
+    ) : (
+      <EmptyState
+        title="Profile coming soon"
+        message="Biography, affiliations, education, research interests, and contact details have not been added yet."
+      />
+    )
+  }
+</BaseLayout>

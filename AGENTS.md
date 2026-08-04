@@ -22,6 +22,12 @@
 - For UI work follow: `build --dense` → `template --dense` and/or `component --dense` → implementation → `doctor`. Prefer `--json` when consuming output programmatically.
 - Preserve the Astryx-managed block in this file; update it with the CLI instead of editing its generated contents.
 
+## Git workflow
+
+- For every feature update, switch to `astro-astryx-keystatic-template` before making changes and keep the work on that branch.
+- After implementation and all required checks pass, commit and push the branch, open a pull request targeting `main`, and merge only after CI succeeds.
+- Never commit or push feature work directly to `main`.
+
 ## Commands and completion checks
 
 - Use Node.js `>=22.13.0` (CI uses Node 24) and install with `npm ci`.

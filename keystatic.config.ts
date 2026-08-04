@@ -30,7 +30,7 @@ export default config({
     brand: { name: 'Academic Portfolio' },
     navigation: {
       Pages: ['siteSettings', 'home', 'about'],
-      Research: ['publications', 'projects'],
+      Research: ['publications', 'talks', 'projects'],
       Writing: ['blog', 'news'],
       Work: ['services'],
     },
@@ -54,6 +54,36 @@ export default config({
         socialLinks: fields.array(linkFields, {
           label: 'Social links',
           itemLabel: (props) => props.fields.label.value || 'Social link',
+        }),
+        showAboutPage: fields.checkbox({
+          label: 'Show About page',
+          description: 'Include About in the public navigation.',
+          defaultValue: true,
+        }),
+        showPublicationsPage: fields.checkbox({
+          label: 'Show Publications page',
+          description: 'Include Publications in the public navigation.',
+          defaultValue: true,
+        }),
+        showTalksPage: fields.checkbox({
+          label: 'Show Talks page',
+          description: 'Include Talks in the public navigation.',
+          defaultValue: true,
+        }),
+        showBlogPage: fields.checkbox({
+          label: 'Show Blog page',
+          description: 'Include Blog in the public navigation.',
+          defaultValue: true,
+        }),
+        showProjectsPage: fields.checkbox({
+          label: 'Show Projects page',
+          description: 'Include Projects in the public navigation.',
+          defaultValue: true,
+        }),
+        showServicesPage: fields.checkbox({
+          label: 'Show Services page',
+          description: 'Include Services in the public navigation.',
+          defaultValue: true,
         }),
       },
     }),
@@ -192,6 +222,43 @@ export default config({
           itemLabel: (props) => props.fields.label.value || 'Publication link',
         }),
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
+      },
+    }),
+    talks: collection({
+      label: 'Talks',
+      slugField: 'title',
+      path: 'src/content/talks/*',
+      format: 'yaml',
+      columns: ['title', 'date', 'type', 'event'],
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        speakers: fields.array(fields.text({ label: 'Speaker' }), {
+          label: 'Speakers',
+          validation: { length: { min: 1 } },
+          itemLabel: (props) => props.value || 'Speaker',
+        }),
+        date: fields.date({
+          label: 'Date',
+          validation: { isRequired: true },
+        }),
+        type: fields.select({
+          label: 'Type',
+          defaultValue: 'conference-presentation',
+          options: [
+            {
+              label: 'Conference presentation',
+              value: 'conference-presentation',
+            },
+            { label: 'Invited talk', value: 'invited-talk' },
+          ],
+        }),
+        event: fields.text({ label: 'Event or host' }),
+        location: fields.text({ label: 'Location' }),
+        abstract: fields.text({ label: 'Abstract', multiline: true }),
+        links: fields.array(linkFields, {
+          label: 'Links',
+          itemLabel: (props) => props.fields.label.value || 'Talk link',
+        }),
       },
     }),
     blog: collection({

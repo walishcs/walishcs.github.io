@@ -3,6 +3,7 @@ import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getProjects } from '@/lib/collections';
 import { formatDateRange, labelFromSlug } from '@/lib/format';
+import { Link } from '@astryxdesign/core/Link';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -41,9 +42,15 @@ const dateRange = formatDateRange(project.data.startDate, project.data.endDate);
           <ul class="detail-links" aria-label="Project links">
             {project.data.links.map((link) => (
               <li>
-                <a href={link.url} rel="noreferrer" target="_blank">
+                <Link
+                  className="site-link"
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  hasUnderline
+                >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

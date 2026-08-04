@@ -58,6 +58,20 @@ const blog = defineCollection({
   }),
 });
 
+const talks = defineCollection({
+  loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/talks' }),
+  schema: z.object({
+    title: z.string(),
+    speakers: z.array(z.string()).min(1),
+    date: calendarDateSchema,
+    type: z.enum(['conference-presentation', 'invited-talk']),
+    event: z.string().default(''),
+    location: z.string().default(''),
+    abstract: z.string().default(''),
+    links: z.array(linkSchema).default([]),
+  }),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdoc', base: './src/content/projects' }),
   schema: z.object({
@@ -94,4 +108,11 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { publications, blog, projects, services, news };
+export const collections = {
+  publications,
+  talks,
+  blog,
+  projects,
+  services,
+  news,
+};

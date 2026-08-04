@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { labelFromSlug } from '@/lib/format';
+import { Link } from '@astryxdesign/core/Link';
 
 export async function getStaticPaths() {
   const publications = await getCollection('publications');
@@ -50,16 +51,28 @@ const jsonLd = {
           <ul class="detail-links" aria-label="Publication links">
             {doiUrl && (
               <li>
-                <a href={doiUrl} rel="noreferrer" target="_blank">
+                <Link
+                  className="site-link"
+                  href={doiUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  hasUnderline
+                >
                   DOI
-                </a>
+                </Link>
               </li>
             )}
             {data.links.map((link) => (
               <li>
-                <a href={link.url} rel="noreferrer" target="_blank">
+                <Link
+                  className="site-link"
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  hasUnderline
+                >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

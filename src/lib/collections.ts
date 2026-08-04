@@ -22,6 +22,11 @@ export async function getProjects() {
   return sortByDateDesc(projects, (entry) => entry.data.startDate);
 }
 
+export async function getTalks() {
+  const talks = await getCollection('talks');
+  return sortByDateDesc(talks, (entry) => entry.data.date);
+}
+
 export async function getActiveServices() {
   const services = await getCollection('services');
   return services
@@ -65,4 +70,10 @@ export async function getFeaturedProjects(limit = 3) {
 
 export async function getPublicationsByYear() {
   return groupByYear(await getPublications(), (entry) => entry.data.year);
+}
+
+export async function getTalksByYear() {
+  return groupByYear(await getTalks(), (entry) =>
+    Number(entry.data.date.slice(0, 4)),
+  );
 }

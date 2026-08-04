@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getPublicationsByYear } from '@/lib/collections';
 import { labelFromSlug } from '@/lib/format';
+import { Link } from '@astryxdesign/core/Link';
 
 const groups = await getPublicationsByYear();
 const years = Object.keys(groups)
@@ -33,9 +34,14 @@ const years = Object.keys(groups)
                 <p class="publication-meta">{labelFromSlug(entry.data.type)}</p>
                 <div class="publication-copy">
                   <h2>
-                    <a href={`/publications/${entry.id}/`}>
+                    <Link
+                      className="site-link"
+                      href={`/publications/${entry.id}/`}
+                      color="inherit"
+                      hasUnderline
+                    >
                       {entry.data.title}
-                    </a>
+                    </Link>
                   </h2>
                   <p>{entry.data.authors.join(', ')}</p>
                   {entry.data.venue && (

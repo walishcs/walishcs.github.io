@@ -46,3 +46,10 @@ export function groupByYear<T>(items: T[], readYear: (item: T) => number) {
     return groups;
   }, {});
 }
+
+export function paginateItems<T>(items: T[], page: number, pageSize: number) {
+  const safePageSize = Math.max(1, Math.floor(pageSize));
+  const safePage = Math.max(1, Math.floor(page));
+  const start = (safePage - 1) * safePageSize;
+  return items.slice(start, start + safePageSize);
+}

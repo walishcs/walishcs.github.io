@@ -2,7 +2,9 @@
 import { ContentCardGrid } from '@/components/ContentCardGrid';
 import { EmptyState } from '@/components/EmptyState';
 import { Hero } from '@/components/Hero';
+import { NewsFeed } from '@/components/NewsFeed';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Link } from '@astryxdesign/core/Link';
 import {
   getFeaturedProjects,
   getFeaturedPublications,
@@ -45,76 +47,46 @@ const secondary =
   />
 
   {
-    home.showNews && (
-      <section class="content-section" aria-labelledby="latest-news">
-        <div class="section-heading">
-          <h2 id="latest-news">News</h2>
-        </div>
-        {news.length ? (
-          <ul class="news-list">
-            {news.slice(0, 5).map((entry) => (
-              <li class="news-item">
-                <time datetime={entry.data.date}>
-                  {formatDate(entry.data.date)}
-                </time>
-                <div class="news-copy">
-                  <h3>
-                    {entry.data.url ? (
-                      <a href={entry.data.url} rel="noreferrer" target="_blank">
-                        {entry.data.title}
-                      </a>
-                    ) : (
-                      entry.data.title
-                    )}
-                  </h3>
-                  {entry.data.summary && <p>{entry.data.summary}</p>}
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState
-            title="No news yet"
-            message="Updates will appear here when available."
-          />
-        )}
-      </section>
-    )
+    home.showFeaturedPublications &&
+      settings.showPublicationsPage !== false && (
+        <section
+          class="content-section"
+          aria-labelledby="featured-publications"
+        >
+          <div class="section-heading">
+            <h2 id="featured-publications">Featured publications</h2>
+            <Link className="site-link" href="/publications/" hasUnderline>
+              View all
+            </Link>
+          </div>
+          {publications.length ? (
+            <ContentCardGrid
+              items={publications.map((entry) => ({
+                href: `/publications/${entry.id}/`,
+                title: entry.data.title,
+                summary: entry.data.abstract,
+                meta: `${entry.data.year}${entry.data.venue ? ` · ${entry.data.venue}` : ''}`,
+                badge: labelFromSlug(entry.data.type),
+              }))}
+            />
+          ) : (
+            <EmptyState
+              title="No featured publications yet"
+              message="Featured research will appear here when it is added."
+            />
+          )}
+        </section>
+      )
   }
 
   {
-    home.showFeaturedPublications && (
-      <section class="content-section" aria-labelledby="featured-publications">
-        <div class="section-heading">
-          <h2 id="featured-publications">Featured publications</h2>
-          <a href="/publications/">View all</a>
-        </div>
-        {publications.length ? (
-          <ContentCardGrid
-            items={publications.map((entry) => ({
-              href: `/publications/${entry.id}/`,
-              title: entry.data.title,
-              summary: entry.data.abstract,
-              meta: `${entry.data.year}${entry.data.venue ? ` · ${entry.data.venue}` : ''}`,
-              badge: labelFromSlug(entry.data.type),
-            }))}
-          />
-        ) : (
-          <EmptyState
-            title="No featured publications yet"
-            message="Featured research will appear here when it is added."
-          />
-        )}
-      </section>
-    )
-  }
-
-  {
-    home.showFeaturedProjects && (
+    home.showFeaturedProjects && settings.showProjectsPage !== false && (
       <section class="content-section" aria-labelledby="featured-projects">
         <div class="section-heading">
           <h2 id="featured-projects">Featured projects</h2>
-          <a href="/projects/">View all</a>
+          <Link className="site-link" href="/projects/" hasUnderline>
+            View all
+          </Link>
         </div>
         {projects.length ? (
           <ContentCardGrid
@@ -137,11 +109,13 @@ const secondary =
   }
 
   {
-    home.showLatestPosts && (
+    home.showLatestPosts && settings.showBlogPage !== false && (
       <section class="content-section" aria-labelledby="latest-posts">
         <div class="section-heading">
           <h2 id="latest-posts">Latest writing</h2>
-          <a href="/blog/">View all</a>
+          <Link className="site-link" href="/blog/" hasUnderline>
+            View all
+          </Link>
         </div>
         {posts.length ? (
           <ContentCardGrid
@@ -157,6 +131,33 @@ const secondary =
           <EmptyState
             title="No published posts yet"
             message="Published writing will appear here when it is ready."
+          />
+        )}
+      </section>
+    )
+  }
+
+  {
+    home.showNews && (
+      <section class="content-section" aria-labelledby="latest-news">
+        <div class="section-heading">
+          <h2 id="latest-news">News</h2>
+        </div>
+        {news.length ? (
+          <NewsFeed
+            items={news.map((entry) => ({
+              id: entry.id,
+              title: entry.data.title,
+              date: entry.data.date,
+              summary: entry.data.summary,
+              url: entry.data.url,
+            }))}
+            client:load
+          />
+        ) : (
+          <EmptyState
+            title="No news yet"
+            message="Updates will appear here when available."
           />
         )}
       </section>

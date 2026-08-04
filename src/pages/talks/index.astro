@@ -1,0 +1,70 @@
+---
+import { Link } from '@astryxdesign/core/Link';
+import { EmptyState } from '@/components/EmptyState';
+import PageHeader from '@/components/PageHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTalksByYear } from '@/lib/collections';
+import { formatDate, labelFromSlug } from '@/lib/format';
+
+const groups = await getTalksByYear();
+const years = Object.keys(groups)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<BaseLayout
+  title="Talks"
+  description="Conference presentations and invited talks."
+>
+  <PageHeader
+    eyebrow="Speaking"
+    title="Talks"
+    description="Conference presentations and invited talks."
+  />
+  {
+    years.length ? (
+      years.map((year) => (
+        <section class="year-group" aria-labelledby={`talk-year-${year}`}>
+          <h2 class="year-heading" id={`talk-year-${year}`}>
+            {year}
+          </h2>
+          <ol class="publication-list">
+            {groups[year].map((entry) => (
+              <li class="publication-item">
+                <p class="publication-meta">{formatDate(entry.data.date)}</p>
+                <article class="publication-copy">
+                  <p class="publication-meta">
+                    {labelFromSlug(entry.data.type)}
+                  </p>
+                  <h2>
+                    <Link
+                      className="site-link"
+                      href={`/talks/${entry.id}/`}
+                      color="inherit"
+                      hasUnderline
+                    >
+                      {entry.data.title}
+                    </Link>
+                  </h2>
+                  <p>{entry.data.speakers.join(', ')}</p>
+                  {(entry.data.event || entry.data.location) && (
+                    <p class="publication-meta">
+                      {[entry.data.event, entry.data.location]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                  )}
+                </article>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    ) : (
+      <EmptyState
+        title="No talks yet"
+        message="Conference presentations and invited talks will appear here after they are added."
+      />
+    )
+  }
+</BaseLayout>

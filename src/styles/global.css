@@ -35,6 +35,12 @@ a {
   text-underline-offset: 0.18em;
 }
 
+.site-link,
+.site-link > span {
+  color: inherit;
+  font: inherit;
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 0.2rem solid var(--color-accent);
@@ -88,7 +94,13 @@ button:focus-visible {
   text-decoration: none;
 }
 
-.site-identity span:last-child {
+.site-identity > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.site-identity-copy {
   display: grid;
 }
 
@@ -101,7 +113,7 @@ button:focus-visible {
   font-size: 1.45rem;
 }
 
-nav ul {
+.desktop-navigation ul {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-1) var(--spacing-3);
@@ -111,21 +123,22 @@ nav ul {
   list-style: none;
 }
 
-nav a {
+.desktop-navigation a {
   position: relative;
   display: inline-block;
   padding-block: var(--spacing-2);
   color: var(--color-text-secondary);
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
 }
 
-nav a:hover,
-nav a[aria-current='page'] {
+.desktop-navigation a:hover,
+.desktop-navigation a[aria-current='page'] {
   color: var(--color-text-primary);
 }
 
-nav a[aria-current='page'] {
+.desktop-navigation a[aria-current='page'] {
   color: var(--color-text-primary);
 }
 
@@ -139,7 +152,7 @@ nav a[aria-current='page'] {
   opacity: 0;
 }
 
-nav a[aria-current='page'] .nav-indicator {
+.desktop-navigation a[aria-current='page'] .nav-indicator {
   view-transition-name: active-nav-indicator;
   opacity: 1;
 }
@@ -169,6 +182,69 @@ nav a[aria-current='page'] .nav-indicator {
 
 .theme-toggle-icon[data-active='false'] {
   display: none;
+}
+
+.header-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.mobile-navigation {
+  display: none;
+}
+
+.mobile-nav-list {
+  display: grid;
+  gap: var(--spacing-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobile-nav-link {
+  display: flex;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-element);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link[aria-current='page'] {
+  background: var(--color-neutral);
+}
+
+.mobile-navigation dialog[open]::backdrop {
+  animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
+    both;
+}
+
+.mobile-navigation dialog[open] > div {
+  animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
+    both;
+}
+
+@keyframes mobile-nav-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-nav-panel-in {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 ::view-transition-group(active-nav-indicator) {
@@ -357,13 +433,8 @@ nav a[aria-current='page'] .nav-indicator {
   gap: var(--spacing-4);
 }
 
-.card-link {
-  display: block;
-  height: 100%;
-  text-decoration: none;
-}
-
-.card-link > * {
+.content-card {
+  position: relative;
   height: 100%;
   border: 1px solid var(--color-border);
   transition:
@@ -372,10 +443,21 @@ nav a[aria-current='page'] .nav-indicator {
     box-shadow var(--duration-fast);
 }
 
-.card-link:hover > * {
+.content-card:has(.card-title-link:hover) {
   transform: translateY(-0.2rem);
   border-color: var(--color-accent);
   box-shadow: var(--shadow-low);
+}
+
+.card-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-title-link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
 }
 
 .card-content,
@@ -439,6 +521,17 @@ nav a[aria-current='page'] .nav-indicator {
 .publication-copy {
   display: grid;
   gap: var(--spacing-2);
+}
+
+.news-feed {
+  display: grid;
+  gap: var(--spacing-4);
+}
+
+.news-pagination {
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--spacing-2);
 }
 
 .year-group + .year-group {
@@ -660,21 +753,17 @@ nav a[aria-current='page'] .nav-indicator {
     grid-row: 1;
   }
 
-  .theme-toggle {
+  .header-actions {
     grid-column: 2;
     grid-row: 1;
   }
 
-  nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100%;
-    overflow-x: auto;
+  .desktop-navigation {
+    display: none;
   }
 
-  nav ul {
-    width: max-content;
-    flex-wrap: nowrap;
+  .mobile-navigation {
+    display: block;
   }
 
   .card-grid {
@@ -745,7 +834,9 @@ nav a[aria-current='page'] .nav-indicator {
 
   ::view-transition-group(*),
   ::view-transition-old(*),
-  ::view-transition-new(*) {
+  ::view-transition-new(*),
+  .mobile-navigation dialog[open]::backdrop,
+  .mobile-navigation dialog[open] > div {
     animation-duration: 0.01ms !important;
   }
 }

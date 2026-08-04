@@ -12,6 +12,12 @@ export const defaultSiteSettings = {
   location: '',
   socialImage: null,
   socialLinks: [],
+  showAboutPage: true,
+  showPublicationsPage: true,
+  showTalksPage: true,
+  showBlogPage: true,
+  showProjectsPage: true,
+  showServicesPage: true,
 };
 
 export const defaultHome = {
@@ -42,7 +48,10 @@ export const defaultAbout = {
 };
 
 export async function getSiteSettings() {
-  return (await reader.singletons.siteSettings.read()) ?? defaultSiteSettings;
+  return {
+    ...defaultSiteSettings,
+    ...((await reader.singletons.siteSettings.read()) ?? {}),
+  };
 }
 
 export async function getHomeContent() {

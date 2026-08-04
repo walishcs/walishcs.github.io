@@ -24,8 +24,8 @@
 
 ## Git workflow
 
-- For feature updates (UI, components, routes, schemas, dependencies, configuration, or tooling), switch to `astro-astryx-keystatic-template` before making changes and keep the work on that branch. After all required checks pass, commit and push it, open a pull request targeting `main`, and merge only after CI succeeds. Never commit or push feature work directly to `main`.
-- For content-only updates made through Keystatic, switch to the current `main` branch first. Commit and push the resulting content and uploaded-asset changes directly to `main`; do not put ordinary site content on `astro-astryx-keystatic-template`.
+- For feature updates (UI, components, routes, schemas, dependencies, configuration, or tooling), switch to `template` before making changes and keep the work on that branch. After all required checks pass, commit and push it, open a pull request targeting `main`, and merge only after CI succeeds. Never commit or push feature work directly to `main`.
+- For content-only updates made through Keystatic, switch to the current `main` branch first. Commit and push the resulting content and uploaded-asset changes directly to `main`; do not put ordinary site content on `template`.
 - If an intended content change also needs a schema, component, layout, route, configuration, or dependency change, treat it as a feature update and use the template → PR → `main` flow.
 
 ## Commands and completion checks

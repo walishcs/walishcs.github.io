@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   filterPublished,
   groupByYear,
+  paginateItems,
   selectFeatured,
   sortByDateDesc,
 } from './collection-utils';
@@ -58,5 +59,13 @@ describe('collection utilities', () => {
       2025: [entries[1]],
       2026: [entries[0], entries[2]],
     });
+  });
+
+  it('paginates items with a stable five-item page size', () => {
+    const entries = Array.from({ length: 12 }, (_, index) => index + 1);
+
+    expect(paginateItems(entries, 1, 5)).toEqual([1, 2, 3, 4, 5]);
+    expect(paginateItems(entries, 2, 5)).toEqual([6, 7, 8, 9, 10]);
+    expect(paginateItems(entries, 3, 5)).toEqual([11, 12]);
   });
 });

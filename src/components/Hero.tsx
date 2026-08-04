@@ -1,5 +1,6 @@
 import { Heading } from '@astryxdesign/core/Heading';
 import { HStack } from '@astryxdesign/core/HStack';
+import { Link } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 
@@ -42,20 +43,24 @@ export function Hero({
         {primary || secondary ? (
           <HStack className="hero-actions" gap={3} wrap="wrap">
             {primary ? (
-              <a
-                className="action-link action-link-primary"
+              <Link
+                className="site-link action-link action-link-primary"
                 href={primary.href}
+                color="inherit"
+                isStandalone
               >
                 {primary.label}
-              </a>
+              </Link>
             ) : null}
             {secondary ? (
-              <a
-                className="action-link action-link-secondary"
+              <Link
+                className="site-link action-link action-link-secondary"
                 href={secondary.href}
+                color="inherit"
+                isStandalone
               >
                 {secondary.label}
-              </a>
+              </Link>
             ) : null}
           </HStack>
         ) : null}

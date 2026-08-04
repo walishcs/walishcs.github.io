@@ -1,8 +1,10 @@
 ---
 import { ThemeRoot } from '@/components/ThemeRoot';
+import { MobileNavigation } from '@/components/MobileNavigation';
 import { getSiteSettings } from '@/lib/site-content';
 import type { TransitionDirectionalAnimations } from 'astro';
 import { ClientRouter } from 'astro:transitions';
+import { Link } from '@astryxdesign/core/Link';
 import '@astryxdesign/core/reset.css';
 import '@astryxdesign/core/astryx.css';
 import '@astryxdesign/theme-stone/theme.css';
@@ -50,13 +52,47 @@ const copyrightYears =
 const lastUpdated = `${buildDateParts.year}/${buildDateParts.month}/${buildDateParts.day}`;
 const lastUpdatedIso = `${buildDateParts.year}-${buildDateParts.month}-${buildDateParts.day}`;
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about/', label: 'About' },
-  { href: '/publications/', label: 'Publications' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/projects/', label: 'Projects' },
-  { href: '/services/', label: 'Services' },
-];
+  { href: '/', label: 'Home', isVisible: true },
+  {
+    href: '/about/',
+    label: 'About',
+    isVisible: settings.showAboutPage !== false,
+  },
+  {
+    href: '/publications/',
+    label: 'Publications',
+    isVisible: settings.showPublicationsPage !== false,
+  },
+  {
+    href: '/talks/',
+    label: 'Talks',
+    isVisible: settings.showTalksPage !== false,
+  },
+  {
+    href: '/blog/',
+    label: 'Blog',
+    isVisible: settings.showBlogPage !== false,
+  },
+  {
+    href: '/projects/',
+    label: 'Projects',
+    isVisible: settings.showProjectsPage !== false,
+  },
+  {
+    href: '/services/',
+    label: 'Services',
+    isVisible: settings.showServicesPage !== false,
+  },
+]
+  .filter((item) => item.isVisible)
+  .map((item) => ({
+    href: item.href,
+    label: item.label,
+    isCurrent:
+      item.href === '/'
+        ? currentPath === '/'
+        : currentPath.startsWith(item.href),
+  }));
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -151,97 +187,105 @@ const pageTransition: TransitionDirectionalAnimations = {
   </head>
   <body>
     <ThemeRoot>
-      <a class="skip-link" href="#main-content">Skip to content</a>
+      <Link
+        className="site-link skip-link"
+        href="#main-content"
+        color="inherit"
+        hasUnderline>Skip to content</Link
+      >
       <header class="site-header">
         <div class="header-inner">
-          <a
-            class="site-identity"
+          <Link
+            className="site-link site-identity"
             href="/"
-            aria-label={`${settings.name} home`}
+            label={`${settings.name} home`}
+            color="inherit"
+            isStandalone
           >
             <span class="site-mark" aria-hidden="true">✦</span>
-            <span>
+            <span class="site-identity-copy">
               <strong>{settings.name}</strong>
               {settings.title && <small>{settings.title}</small>}
             </span>
-          </a>
-          <nav aria-label="Primary navigation">
+          </Link>
+          <nav class="desktop-navigation" aria-label="Primary navigation">
             <ul>
               {
                 navItems.map((item) => (
                   <li>
-                    <a
+                    <Link
+                      className="site-link desktop-nav-link"
                       href={item.href}
-                      aria-current={
-                        item.href === '/'
-                          ? currentPath === '/'
-                            ? 'page'
-                            : undefined
-                          : currentPath.startsWith(item.href)
-                            ? 'page'
-                            : undefined
-                      }
+                      color="inherit"
+                      isStandalone
+                      aria-current={item.isCurrent ? 'page' : undefined}
                     >
                       <span class="nav-label">{item.label}</span>
                       <span class="nav-indicator" aria-hidden="true" />
-                    </a>
+                    </Link>
                   </li>
                 ))
               }
             </ul>
           </nav>
-          <button
-            class="theme-toggle"
-            type="button"
-            data-theme-toggle
-            aria-label="Switch to dark mode"
-            title="Switch to dark mode"
+          <aside
+            class="header-actions"
+            aria-label="Display and navigation controls"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="theme-toggle-icon lucide lucide-moon p3nfvp2"
-              data-theme-icon="dark"
-              data-active="true"
-              aria-hidden="true"
+            <button
+              class="theme-toggle"
+              type="button"
+              data-theme-toggle
+              aria-label="Switch to dark mode"
+              title="Switch to dark mode"
             >
-              <path
-                d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
-              ></path>
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="theme-toggle-icon lucide lucide-sun p3nfvp2"
-              data-theme-icon="light"
-              data-active="false"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2"></path>
-              <path d="M12 20v2"></path>
-              <path d="m4.93 4.93 1.41 1.41"></path>
-              <path d="m17.66 17.66 1.41 1.41"></path>
-              <path d="M2 12h2"></path>
-              <path d="M20 12h2"></path>
-              <path d="m6.34 17.66-1.41 1.41"></path>
-              <path d="m19.07 4.93-1.41 1.41"></path>
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="theme-toggle-icon lucide lucide-moon p3nfvp2"
+                data-theme-icon="dark"
+                data-active="true"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+                ></path>
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="theme-toggle-icon lucide lucide-sun p3nfvp2"
+                data-theme-icon="light"
+                data-active="false"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+            </button>
+            <MobileNavigation items={navItems} client:only="react" />
+          </aside>
         </div>
       </header>
       <main
@@ -261,33 +305,65 @@ const pageTransition: TransitionDirectionalAnimations = {
           <div class="footer-links">
             {
               settings.email && (
-                <a href={`mailto:${settings.email}`}>{settings.email}</a>
+                <Link
+                  className="site-link"
+                  href={`mailto:${settings.email}`}
+                  color="inherit"
+                  hasUnderline
+                >
+                  {settings.email}
+                </Link>
               )
             }
             {
               settings.socialLinks.map((link) => (
-                <a href={link.url} rel="me noreferrer" target="_blank">
+                <Link
+                  className="site-link"
+                  href={link.url}
+                  rel="me noreferrer"
+                  target="_blank"
+                  color="inherit"
+                  hasUnderline
+                >
                   {link.label}
-                </a>
+                </Link>
               ))
             }
           </div>
           <div class="footer-note">
             <p>
               © {copyrightYears} Walis Hian-chi Song, Built with{' '}
-              <a href="https://astro.build/" rel="noreferrer" target="_blank"
-                >Astro</a
-              >,{' '}
-              <a href="https://react.dev/" rel="noreferrer" target="_blank"
-                >React</a
-              >,{' '}
-              <a
-                href="https://astryx.atmeta.com/"
+              <Link
+                className="site-link"
+                href="https://astro.build/"
+                target="_blank"
                 rel="noreferrer"
-                target="_blank">Astryx</a
+                color="inherit"
+                hasUnderline>Astro</Link
+              >,{' '}
+              <Link
+                className="site-link"
+                href="https://react.dev/"
+                target="_blank"
+                rel="noreferrer"
+                color="inherit"
+                hasUnderline>React</Link
+              >,{' '}
+              <Link
+                className="site-link"
+                href="https://astryx.atmeta.com/"
+                target="_blank"
+                rel="noreferrer"
+                color="inherit"
+                hasUnderline>Astryx</Link
               >, and{' '}
-              <a href="https://keystatic.com/" rel="noreferrer" target="_blank"
-                >Keystatic</a
+              <Link
+                className="site-link"
+                href="https://keystatic.com/"
+                target="_blank"
+                rel="noreferrer"
+                color="inherit"
+                hasUnderline>Keystatic</Link
               >.
             </p>
             <p>

@@ -1,7 +1,9 @@
 import { Button } from '@astryxdesign/core/Button';
 import { Link } from '@astryxdesign/core/Link';
 import { MobileNav } from '@astryxdesign/core/MobileNav';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+const NAV_TRANSITION_MS = 300;
 
 interface NavigationItem {
   href: string;
@@ -11,6 +13,36 @@ interface NavigationItem {
 
 export function MobileNavigation({ items }: { items: NavigationItem[] }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const openNavigation = useCallback(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = null;
+    setIsClosing(false);
+    setIsOpen(true);
+  }, []);
+
+  const closeNavigation = useCallback(() => {
+    if (!isOpen || isClosing) return;
+    setIsClosing(true);
+    const duration = window.matchMedia('(prefers-reduced-motion: reduce)')
+      .matches
+      ? 10
+      : NAV_TRANSITION_MS;
+    closeTimerRef.current = setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+      closeTimerRef.current = null;
+    }, duration);
+  }, [isClosing, isOpen]);
+
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    },
+    [],
+  );
 
   return (
     <section className="mobile-navigation" aria-label="Mobile navigation">
@@ -36,12 +68,19 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
           </svg>
         }
         variant="ghost"
-        onClick={() => setIsOpen(true)}
+        onClick={openNavigation}
         isIconOnly
       />
       <MobileNav
+        className={
+          isOpen
+            ? isClosing
+              ? 'mobile-nav-exit'
+              : 'mobile-nav-enter'
+            : undefined
+        }
         isOpen={isOpen}
-        onOpenChange={setIsOpen}
+        onOpenChange={(open) => (open ? openNavigation() : closeNavigation())}
         header="Navigation"
         side="end"
       >
@@ -55,7 +94,7 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
                   color="inherit"
                   isStandalone
                   aria-current={item.isCurrent ? 'page' : undefined}
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeNavigation}
                 >
                   {item.label}
                 </Link>

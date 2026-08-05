@@ -217,13 +217,27 @@ button:focus-visible {
   background: var(--color-neutral);
 }
 
-.mobile-navigation dialog[open]::backdrop {
+.mobile-nav-enter::backdrop {
   animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
     both;
 }
 
-.mobile-navigation dialog[open] > div {
+.mobile-nav-enter > div {
   animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
+    both;
+}
+
+.mobile-nav-exit {
+  pointer-events: none;
+}
+
+.mobile-nav-exit::backdrop {
+  animation: mobile-nav-backdrop-out var(--duration-medium) var(--ease-standard)
+    both;
+}
+
+.mobile-nav-exit > div {
+  animation: mobile-nav-panel-out var(--duration-medium) var(--ease-standard)
     both;
 }
 
@@ -231,19 +245,23 @@ button:focus-visible {
   from {
     opacity: 0;
   }
-
-  to {
-    opacity: 1;
-  }
 }
 
 @keyframes mobile-nav-panel-in {
   from {
     transform: translateX(100%);
   }
+}
 
+@keyframes mobile-nav-backdrop-out {
   to {
-    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+@keyframes mobile-nav-panel-out {
+  to {
+    transform: translateX(100%);
   }
 }
 
@@ -835,8 +853,10 @@ button:focus-visible {
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*),
-  .mobile-navigation dialog[open]::backdrop,
-  .mobile-navigation dialog[open] > div {
+  .mobile-nav-enter::backdrop,
+  .mobile-nav-enter > div,
+  .mobile-nav-exit::backdrop,
+  .mobile-nav-exit > div {
     animation-duration: 0.01ms !important;
   }
 }

@@ -7,11 +7,36 @@ const linkSchema = z.object({
   url: z.url(),
 });
 
-const publicationYearSchema = z
+const publicationYearNumberSchema = z
   .union([z.number().int(), z.string().regex(/^\d{4}$/)])
   .transform(Number)
   .refine((year) => year >= 1800 && year <= 2200, {
     message: 'Publication year must be between 1800 and 2200.',
+  });
+
+const publicationYearSchema = z
+  .union([
+    publicationYearNumberSchema,
+    z.literal('to-appear'),
+    z.literal('ongoing'),
+    z.object({
+      discriminant: z.literal('year'),
+      value: publicationYearNumberSchema,
+    }),
+    z.object({
+      discriminant: z.literal('to-appear'),
+      value: z.null().optional(),
+    }),
+    z.object({
+      discriminant: z.literal('ongoing'),
+      value: z.null().optional(),
+    }),
+  ])
+  .transform((value) => {
+    if (typeof value === 'object') {
+      return value.discriminant === 'year' ? value.value : value.discriminant;
+    }
+    return value;
   });
 
 const calendarDateSchema = z

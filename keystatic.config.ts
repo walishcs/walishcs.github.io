@@ -182,7 +182,7 @@ export default config({
       slugField: 'title',
       path: 'src/content/publications/*',
       format: 'yaml',
-      columns: ['title', 'year', 'type', 'featured'],
+      columns: ['title', 'type', 'featured'],
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
         authors: fields.array(fields.text({ label: 'Author' }), {
@@ -190,17 +190,28 @@ export default config({
           validation: { length: { min: 1 } },
           itemLabel: (props) => props.value || 'Author',
         }),
-        year: fields.text({
-          label: 'Year',
-          description: 'Use a four-digit year from 1800 to 2200.',
-          validation: {
-            isRequired: true,
-            pattern: {
-              regex: /^(?:18\d{2}|19\d{2}|20\d{2}|21\d{2}|2200)$/,
-              message: 'Enter a four-digit year from 1800 to 2200.',
-            },
+        year: fields.conditional(
+          fields.select({
+            label: 'Publication year',
+            defaultValue: 'year',
+            options: [
+              { label: 'Year', value: 'year' },
+              { label: 'To appear', value: 'to-appear' },
+              { label: 'Ongoing', value: 'ongoing' },
+            ],
+            description:
+              'Choose one status, or enter a numeric year. These choices are mutually exclusive.',
+          }),
+          {
+            year: fields.integer({
+              label: 'Year',
+              description: 'Use a year from 1800 to 2200.',
+              validation: { isRequired: true, min: 1800, max: 2200 },
+            }),
+            'to-appear': fields.empty(),
+            ongoing: fields.empty(),
           },
-        }),
+        ),
         type: fields.select({
           label: 'Type',
           defaultValue: 'article',

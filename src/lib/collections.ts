@@ -1,10 +1,16 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import {
   filterPublished,
   groupByYear,
   selectFeatured,
   sortByDateDesc,
 } from './collection-utils';
+import {
+  comparePublicationYears,
+  type PublicationYear,
+} from './publication-utils';
+
+type PublicationEntry = CollectionEntry<'publications'>;
 
 export async function getPublishedPosts() {
   const posts = await getCollection('blog');
@@ -48,7 +54,10 @@ export async function getPublications() {
   const publications = await getCollection('publications');
   return [...publications].sort(
     (a, b) =>
-      b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
+      comparePublicationYears(
+        a.data.year as PublicationYear,
+        b.data.year as PublicationYear,
+      ) || a.data.title.localeCompare(b.data.title),
   );
 }
 
@@ -69,7 +78,18 @@ export async function getFeaturedProjects(limit = 3) {
 }
 
 export async function getPublicationsByYear() {
-  return groupByYear(await getPublications(), (entry) => entry.data.year);
+  const groups = new Map<PublicationYear, PublicationEntry[]>();
+
+  for (const publication of await getPublications()) {
+    const year = publication.data.year as PublicationYear;
+    const entries = groups.get(year) ?? [];
+    entries.push(publication);
+    groups.set(year, entries);
+  }
+
+  return [...groups.entries()]
+    .sort(([first], [second]) => comparePublicationYears(first, second))
+    .map(([year, entries]) => ({ year, entries }));
 }
 
 export async function getTalksByYear() {

@@ -4,12 +4,10 @@ import PageHeader from '@/components/PageHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getPublicationsByYear } from '@/lib/collections';
 import { labelFromSlug } from '@/lib/format';
+import { publicationYearLabel } from '@/lib/publication-utils';
 import { Link } from '@astryxdesign/core/Link';
 
 const groups = await getPublicationsByYear();
-const years = Object.keys(groups)
-  .map(Number)
-  .sort((a, b) => b - a);
 ---
 
 <BaseLayout
@@ -22,14 +20,14 @@ const years = Object.keys(groups)
     description="Peer-reviewed research and scholarly outputs."
   />
   {
-    years.length ? (
-      years.map((year) => (
+    groups.length ? (
+      groups.map(({ year, entries }) => (
         <section class="year-group" aria-labelledby={`year-${year}`}>
           <h2 class="year-heading" id={`year-${year}`}>
-            {year}
+            {publicationYearLabel(year)}
           </h2>
           <ol class="publication-list">
-            {groups[year].map((entry) => (
+            {entries.map((entry) => (
               <li class="publication-item">
                 <p class="publication-meta">{labelFromSlug(entry.data.type)}</p>
                 <div class="publication-copy">

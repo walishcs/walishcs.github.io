@@ -12,6 +12,7 @@ import {
   getPublishedPosts,
 } from '@/lib/collections';
 import { formatDate, formatDateRange, labelFromSlug } from '@/lib/format';
+import { publicationYearLabel } from '@/lib/publication-utils';
 import { getHomeContent, getSiteSettings } from '@/lib/site-content';
 
 const [home, settings, publications, projects, posts, news] = await Promise.all(
@@ -65,7 +66,7 @@ const secondary =
                 href: `/publications/${entry.id}/`,
                 title: entry.data.title,
                 summary: entry.data.abstract,
-                meta: `${entry.data.year}${entry.data.venue ? ` · ${entry.data.venue}` : ''}`,
+                meta: `${publicationYearLabel(entry.data.year)}${entry.data.venue ? ` · ${entry.data.venue}` : ''}`,
                 badge: labelFromSlug(entry.data.type),
               }))}
             />

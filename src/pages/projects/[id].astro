@@ -30,7 +30,7 @@ const dateRange = formatDateRange(project.data.startDate, project.data.endDate);
   <article>
     <header class="detail-header">
       <p class="eyebrow">{labelFromSlug(project.data.status)} project</p>
-      <h1>{project.data.title}</h1>
+      <h1 class="detail-title">{project.data.title}</h1>
       {dateRange && <p class="detail-meta">{dateRange}</p>}
       {
         project.data.summary && (

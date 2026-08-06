@@ -1,0 +1,12 @@
+---
+import { parseInlineEmphasis } from '@/lib/inline-emphasis';
+
+interface Props {
+  value: string;
+}
+
+const { value } = Astro.props;
+const parts = parseInlineEmphasis(value);
+---
+
+{parts.map((part) => (part.italic ? <em>{part.text}</em> : part.text))}

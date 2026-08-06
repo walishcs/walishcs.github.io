@@ -1,5 +1,6 @@
 ---
 import { EmptyState } from '@/components/EmptyState';
+import InlineEmphasis from '@/components/InlineEmphasis.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getPublicationsByYear } from '@/lib/collections';
@@ -43,7 +44,9 @@ const groups = await getPublicationsByYear();
                   </h2>
                   <p>{entry.data.authors.join(', ')}</p>
                   {entry.data.venue && (
-                    <p class="publication-meta">{entry.data.venue}</p>
+                    <p class="publication-meta">
+                      <InlineEmphasis value={entry.data.venue} />
+                    </p>
                   )}
                 </div>
               </li>

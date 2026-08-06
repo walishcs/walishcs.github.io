@@ -1,5 +1,6 @@
 ---
 import { Link } from '@astryxdesign/core/Link';
+import InlineEmphasis from '@/components/InlineEmphasis.astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTalks } from '@/lib/collections';
@@ -19,7 +20,6 @@ interface Props {
 
 const { talk } = Astro.props;
 const { data } = talk;
-const eventLocation = [data.event, data.location].filter(Boolean).join(' · ');
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
@@ -39,10 +39,20 @@ const jsonLd = {
   <article>
     <header class="detail-header">
       <p class="eyebrow">{labelFromSlug(data.type)}</p>
-      <h1>{data.title}</h1>
+      <h1 class="detail-title">{data.title}</h1>
       <p class="detail-summary">{data.speakers.join(', ')}</p>
       <p class="detail-meta">
-        {formatDate(data.date)}{eventLocation && ` · ${eventLocation}`}
+        {formatDate(data.date)}
+        {
+          (data.event || data.location) && (
+            <>
+              {' · '}
+              {data.event && <InlineEmphasis value={data.event} />}
+              {data.event && data.location && ' · '}
+              {data.location && <InlineEmphasis value={data.location} />}
+            </>
+          )
+        }
       </p>
       {
         data.links.length > 0 && (

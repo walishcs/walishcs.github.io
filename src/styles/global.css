@@ -574,11 +574,11 @@ button:focus-visible {
   margin-block-end: var(--spacing-8);
 }
 
-.detail-header h1 {
+.detail-title {
   margin: 0;
   font-family: var(--font-family-heading);
-  font-size: clamp(2.4rem, 7vw, 5rem);
-  line-height: 1;
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  line-height: 1.04;
   letter-spacing: -0.035em;
   text-wrap: balance;
 }

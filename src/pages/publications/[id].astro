@@ -1,5 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
+import InlineEmphasis from '@/components/InlineEmphasis.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { labelFromSlug } from '@/lib/format';
 import { publicationYearLabel } from '@/lib/publication-utils';
@@ -46,10 +47,18 @@ const jsonLd = {
   <article>
     <header class="detail-header">
       <p class="eyebrow">{labelFromSlug(data.type)}</p>
-      <h1>{data.title}</h1>
+      <h1 class="detail-title">{data.title}</h1>
       <p class="detail-summary">{data.authors.join(', ')}</p>
       <p class="detail-meta">
-        {publicationYearLabel(data.year)}{data.venue && ` · ${data.venue}`}
+        {publicationYearLabel(data.year)}
+        {
+          data.venue && (
+            <>
+              {' · '}
+              <InlineEmphasis value={data.venue} />
+            </>
+          )
+        }
       </p>
       {
         (doiUrl || data.links.length > 0) && (

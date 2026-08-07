@@ -52,7 +52,8 @@ const publications = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
-    authors: z.array(z.string()).min(1),
+    authors: z.array(z.string()).default([]),
+    defaultContributorPosition: z.number().int().min(1).nullable().optional(),
     year: publicationYearSchema,
     type: z.enum([
       'article',
@@ -87,7 +88,8 @@ const talks = defineCollection({
   loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/talks' }),
   schema: z.object({
     title: z.string(),
-    speakers: z.array(z.string()).min(1),
+    speakers: z.array(z.string()).default([]),
+    defaultContributorPosition: z.number().int().min(1).nullable().optional(),
     date: calendarDateSchema,
     type: z.enum(['conference-presentation', 'invited-talk']),
     event: z.string().default(''),

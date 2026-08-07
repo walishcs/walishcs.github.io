@@ -1,20 +1,29 @@
 ---
-import { isDefaultPersonName, withDefaultPersonName } from '@/lib/person-names';
+import {
+  formatPersonName,
+  isDefaultPersonName,
+  resolvePersonNames,
+} from '@/lib/person-names';
 
 interface Props {
   names: string[];
   defaultName?: string;
+  position?: number | null;
 }
 
-const { names, defaultName = '' } = Astro.props;
-const displayNames = withDefaultPersonName(names, defaultName);
+const { names, defaultName = '', position } = Astro.props;
+const displayNames = resolvePersonNames(names, defaultName, position);
 ---
 
 {
   displayNames.map((name, index) => (
     <>
       {index > 0 && ', '}
-      {isDefaultPersonName(name, defaultName) ? <strong>{name}</strong> : name}
+      {isDefaultPersonName(name, defaultName) ? (
+        <strong>{formatPersonName(name, index)}</strong>
+      ) : (
+        formatPersonName(name, index)
+      )}
     </>
   ))
 }

@@ -49,6 +49,7 @@ const settings = await getSiteSettings();
                     <PersonNames
                       names={entry.data.authors}
                       defaultName={settings.defaultContributorName}
+                      position={entry.data.defaultContributorPosition}
                     />
                   </p>
                   {entry.data.venue && (

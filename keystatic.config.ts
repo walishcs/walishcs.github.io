@@ -45,7 +45,7 @@ export default config({
         defaultContributorName: fields.text({
           label: 'Default author / speaker name',
           description:
-            'This name is automatically included and emphasized in Publications and Talks.',
+            'Use “Family, Given” or “Given Family”. This name can be inserted and emphasized in Publications and Talks.',
         }),
         title: fields.text({ label: 'Academic title or role' }),
         description: fields.text({
@@ -192,8 +192,15 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         authors: fields.array(fields.text({ label: 'Author' }), {
           label: 'Authors',
-          validation: { length: { min: 1 } },
+          description:
+            'Leave empty when the configured default name is the only author. Otherwise add authors in publication order using “Family, Given” or “Given Family”.',
           itemLabel: (props) => props.value || 'Author',
+        }),
+        defaultContributorPosition: fields.integer({
+          label: 'Default name position',
+          description:
+            'When other authors are listed, enter 1 for first author, 2 for second, and so on. Leave empty when the default name is the only author or is already listed above.',
+          validation: { min: 1 },
         }),
         year: fields.conditional(
           fields.select({
@@ -250,8 +257,15 @@ export default config({
         title: fields.slug({ name: { label: 'Title' } }),
         speakers: fields.array(fields.text({ label: 'Speaker' }), {
           label: 'Speakers',
-          validation: { length: { min: 1 } },
+          description:
+            'Leave empty when the configured default name is the only speaker. Otherwise add speakers in presentation order using “Family, Given” or “Given Family”.',
           itemLabel: (props) => props.value || 'Speaker',
+        }),
+        defaultContributorPosition: fields.integer({
+          label: 'Default name position',
+          description:
+            'When other speakers are listed, enter 1 for first speaker, 2 for second, and so on. Leave empty when the default name is the only speaker or is already listed above.',
+          validation: { min: 1 },
         }),
         date: fields.date({
           label: 'Date',

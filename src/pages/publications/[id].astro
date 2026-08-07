@@ -4,7 +4,7 @@ import InlineEmphasis from '@/components/InlineEmphasis.astro';
 import PersonNames from '@/components/PersonNames.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { labelFromSlug } from '@/lib/format';
-import { withDefaultPersonName } from '@/lib/person-names';
+import { formatPersonName, resolvePersonNames } from '@/lib/person-names';
 import { publicationYearLabel } from '@/lib/publication-utils';
 import { getSiteSettings } from '@/lib/site-content';
 import { Link } from '@astryxdesign/core/Link';
@@ -24,9 +24,10 @@ interface Props {
 const { publication } = Astro.props;
 const { data } = publication;
 const settings = await getSiteSettings();
-const authors = withDefaultPersonName(
+const authors = resolvePersonNames(
   data.authors,
   settings.defaultContributorName,
+  data.defaultContributorPosition,
 );
 const doiUrl = data.doi
   ? data.doi.startsWith('http')
@@ -37,7 +38,10 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ScholarlyArticle',
   headline: data.title,
-  author: authors.map((name) => ({ '@type': 'Person', name })),
+  author: authors.map((name) => ({
+    '@type': 'Person',
+    name: formatPersonName(name, 1),
+  })),
   ...(typeof data.year === 'number'
     ? { datePublished: String(data.year) }
     : {}),
@@ -60,6 +64,7 @@ const jsonLd = {
         <PersonNames
           names={data.authors}
           defaultName={settings.defaultContributorName}
+          position={data.defaultContributorPosition}
         />
       </p>
       <p class="detail-meta">

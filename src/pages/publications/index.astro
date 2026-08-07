@@ -1,14 +1,17 @@
 ---
 import { EmptyState } from '@/components/EmptyState';
 import InlineEmphasis from '@/components/InlineEmphasis.astro';
+import PersonNames from '@/components/PersonNames.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getPublicationsByYear } from '@/lib/collections';
 import { labelFromSlug } from '@/lib/format';
 import { publicationYearLabel } from '@/lib/publication-utils';
+import { getSiteSettings } from '@/lib/site-content';
 import { Link } from '@astryxdesign/core/Link';
 
 const groups = await getPublicationsByYear();
+const settings = await getSiteSettings();
 ---
 
 <BaseLayout
@@ -42,7 +45,12 @@ const groups = await getPublicationsByYear();
                       {entry.data.title}
                     </Link>
                   </h2>
-                  <p>{entry.data.authors.join(', ')}</p>
+                  <p>
+                    <PersonNames
+                      names={entry.data.authors}
+                      defaultName={settings.defaultContributorName}
+                    />
+                  </p>
                   {entry.data.venue && (
                     <p class="publication-meta">
                       <InlineEmphasis value={entry.data.venue} />

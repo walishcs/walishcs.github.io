@@ -5,6 +5,7 @@ const reader = createReader(process.cwd(), keystaticConfig);
 
 export const defaultSiteSettings = {
   name: 'Academic Portfolio',
+  defaultContributorName: '',
   title: '',
   description:
     'An academic portfolio for research, writing, and professional work.',

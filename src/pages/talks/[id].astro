@@ -1,10 +1,13 @@
 ---
 import { Link } from '@astryxdesign/core/Link';
 import InlineEmphasis from '@/components/InlineEmphasis.astro';
+import PersonNames from '@/components/PersonNames.astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTalks } from '@/lib/collections';
 import { formatDate, labelFromSlug } from '@/lib/format';
+import { withDefaultPersonName } from '@/lib/person-names';
+import { getSiteSettings } from '@/lib/site-content';
 
 export async function getStaticPaths() {
   const talks = await getTalks();
@@ -20,13 +23,18 @@ interface Props {
 
 const { talk } = Astro.props;
 const { data } = talk;
+const settings = await getSiteSettings();
+const speakers = withDefaultPersonName(
+  data.speakers,
+  settings.defaultContributorName,
+);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: data.title,
   startDate: data.date,
   description: data.abstract || undefined,
-  performer: data.speakers.map((name) => ({ '@type': 'Person', name })),
+  performer: speakers.map((name) => ({ '@type': 'Person', name })),
   location: data.location || undefined,
 };
 ---
@@ -40,7 +48,12 @@ const jsonLd = {
     <header class="detail-header">
       <p class="eyebrow">{labelFromSlug(data.type)}</p>
       <h1 class="detail-title">{data.title}</h1>
-      <p class="detail-summary">{data.speakers.join(', ')}</p>
+      <p class="detail-summary">
+        <PersonNames
+          names={data.speakers}
+          defaultName={settings.defaultContributorName}
+        />
+      </p>
       <p class="detail-meta">
         {formatDate(data.date)}
         {

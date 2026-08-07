@@ -42,6 +42,11 @@ export default config({
       format: 'yaml',
       schema: {
         name: fields.text({ label: 'Name', validation: { isRequired: true } }),
+        defaultContributorName: fields.text({
+          label: 'Default author / speaker name',
+          description:
+            'This name is automatically included and emphasized in Publications and Talks.',
+        }),
         title: fields.text({ label: 'Academic title or role' }),
         description: fields.text({
           label: 'SEO description',

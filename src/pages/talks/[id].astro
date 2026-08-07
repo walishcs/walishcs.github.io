@@ -6,7 +6,7 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTalks } from '@/lib/collections';
 import { formatDate, labelFromSlug } from '@/lib/format';
-import { withDefaultPersonName } from '@/lib/person-names';
+import { formatPersonName, resolvePersonNames } from '@/lib/person-names';
 import { getSiteSettings } from '@/lib/site-content';
 
 export async function getStaticPaths() {
@@ -24,9 +24,10 @@ interface Props {
 const { talk } = Astro.props;
 const { data } = talk;
 const settings = await getSiteSettings();
-const speakers = withDefaultPersonName(
+const speakers = resolvePersonNames(
   data.speakers,
   settings.defaultContributorName,
+  data.defaultContributorPosition,
 );
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -34,7 +35,10 @@ const jsonLd = {
   name: data.title,
   startDate: data.date,
   description: data.abstract || undefined,
-  performer: speakers.map((name) => ({ '@type': 'Person', name })),
+  performer: speakers.map((name) => ({
+    '@type': 'Person',
+    name: formatPersonName(name, 1),
+  })),
   location: data.location || undefined,
 };
 ---
@@ -52,6 +56,7 @@ const jsonLd = {
         <PersonNames
           names={data.speakers}
           defaultName={settings.defaultContributorName}
+          position={data.defaultContributorPosition}
         />
       </p>
       <p class="detail-meta">

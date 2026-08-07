@@ -54,6 +54,7 @@ const years = Object.keys(groups)
                     <PersonNames
                       names={entry.data.speakers}
                       defaultName={settings.defaultContributorName}
+                      position={entry.data.defaultContributorPosition}
                     />
                   </p>
                   {(entry.data.event || entry.data.location) && (

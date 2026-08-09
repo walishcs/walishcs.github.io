@@ -14,6 +14,7 @@ export const defaultSiteSettings = {
   socialImage: null,
   socialLinks: [],
   showAboutPage: true,
+  showCvPage: false,
   showPublicationsPage: true,
   showTalksPage: true,
   showBlogPage: true,

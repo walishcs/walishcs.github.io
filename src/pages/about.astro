@@ -27,7 +27,11 @@ const hasContent = Boolean(
 );
 ---
 
-<BaseLayout title="About" description={about.introduction || undefined}>
+<BaseLayout
+  title="About"
+  description={about.introduction || undefined}
+  searchCategory="About"
+>
   <PageHeader
     class="about-page-header"
     eyebrow="Profile"

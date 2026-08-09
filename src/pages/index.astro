@@ -36,7 +36,7 @@ const secondary =
     : undefined;
 ---
 
-<BaseLayout>
+<BaseLayout searchCategory="Home">
   <Hero
     eyebrow={home.eyebrow}
     heading={home.heading}
@@ -53,6 +53,7 @@ const secondary =
         <section
           class="content-section featured-publications-section"
           aria-labelledby="featured-publications"
+          data-pagefind-ignore
         >
           <div class="section-heading">
             <h2 id="featured-publications">Featured publications</h2>
@@ -81,7 +82,11 @@ const secondary =
 
   {
     home.showFeaturedProjects && settings.showProjectsPage !== false && (
-      <section class="content-section" aria-labelledby="featured-projects">
+      <section
+        class="content-section"
+        aria-labelledby="featured-projects"
+        data-pagefind-ignore
+      >
         <div class="section-heading">
           <h2 id="featured-projects">Featured projects</h2>
           <Link className="site-link" href="/projects/" hasUnderline>
@@ -110,7 +115,11 @@ const secondary =
 
   {
     home.showLatestPosts && settings.showBlogPage !== false && (
-      <section class="content-section" aria-labelledby="latest-posts">
+      <section
+        class="content-section"
+        aria-labelledby="latest-posts"
+        data-pagefind-ignore
+      >
         <div class="section-heading">
           <h2 id="latest-posts">Latest writing</h2>
           <Link className="site-link" href="/blog/" hasUnderline>
@@ -139,7 +148,11 @@ const secondary =
 
   {
     home.showNews && (
-      <section class="content-section" aria-labelledby="latest-news">
+      <section
+        class="content-section"
+        aria-labelledby="latest-news"
+        data-pagefind-ignore
+      >
         <div class="section-heading">
           <h2 id="latest-news">News</h2>
         </div>

@@ -198,6 +198,34 @@ button:focus-visible {
   gap: var(--spacing-1);
 }
 
+.site-search {
+  display: inline-flex;
+}
+
+.site-search-result {
+  display: grid;
+  gap: var(--spacing-1);
+  min-width: 0;
+}
+
+.site-search-result strong,
+.site-search-result span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-search-result strong {
+  white-space: nowrap;
+}
+
+.site-search-result span {
+  display: -webkit-box;
+  color: var(--color-text-secondary);
+  font-size: var(--text-supporting-size);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .mobile-navigation {
   display: none;
 }

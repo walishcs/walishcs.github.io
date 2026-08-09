@@ -1,6 +1,7 @@
 ---
 import { ThemeRoot } from '@/components/ThemeRoot';
 import { MobileNavigation } from '@/components/MobileNavigation';
+import { SearchPalette } from '@/components/SearchPalette';
 import { getSiteSettings } from '@/lib/site-content';
 import type { TransitionDirectionalAnimations } from 'astro';
 import { ClientRouter } from 'astro:transitions';
@@ -16,6 +17,15 @@ interface Props {
   image?: string | null;
   canonicalPath?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  searchCategory?:
+    | 'Home'
+    | 'About'
+    | 'CV'
+    | 'Publication'
+    | 'Talk'
+    | 'Blog'
+    | 'Project'
+    | 'Service';
 }
 
 const settings = await getSiteSettings();
@@ -25,6 +35,7 @@ const {
   image = settings.socialImage,
   canonicalPath = Astro.url.pathname,
   jsonLd,
+  searchCategory,
 } = Astro.props;
 const pageTitle = title ? `${title} · ${settings.name}` : settings.name;
 const canonical = new URL(canonicalPath, Astro.site ?? Astro.url.origin).href;
@@ -57,6 +68,11 @@ const navItems = [
     href: '/about/',
     label: 'About',
     isVisible: settings.showAboutPage !== false,
+  },
+  {
+    href: '/cv/',
+    label: 'CV',
+    isVisible: settings.showCvPage === true,
   },
   {
     href: '/publications/',
@@ -93,6 +109,17 @@ const navItems = [
         ? currentPath === '/'
         : currentPath.startsWith(item.href),
   }));
+const searchVisibility = {
+  Home: true,
+  About: settings.showAboutPage !== false,
+  CV: settings.showCvPage === true,
+  Publication: settings.showPublicationsPage !== false,
+  Talk: settings.showTalksPage !== false,
+  Blog: settings.showBlogPage !== false,
+  Project: settings.showProjectsPage !== false,
+  Service: settings.showServicesPage !== false,
+};
+const isSearchable = searchCategory ? searchVisibility[searchCategory] : false;
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -232,6 +259,7 @@ const pageTransition: TransitionDirectionalAnimations = {
             class="header-actions"
             aria-label="Display and navigation controls"
           >
+            <SearchPalette client:only="react" />
             <button
               class="theme-toggle"
               type="button"
@@ -291,6 +319,10 @@ const pageTransition: TransitionDirectionalAnimations = {
       <main
         id="main-content"
         class="site-main"
+        data-pagefind-body={isSearchable || undefined}
+        data-pagefind-meta={isSearchable
+          ? `section:${searchCategory}`
+          : undefined}
         transition:name="page-content"
         transition:animate={pageTransition}
       >

@@ -65,6 +65,11 @@ export default config({
           description: 'Include About in the public navigation.',
           defaultValue: true,
         }),
+        showCvPage: fields.checkbox({
+          label: 'Show CV page',
+          description: 'Include CV in the public navigation and site search.',
+          defaultValue: false,
+        }),
         showPublicationsPage: fields.checkbox({
           label: 'Show Publications page',
           description: 'Include Publications in the public navigation.',

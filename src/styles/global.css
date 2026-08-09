@@ -21,6 +21,13 @@ html[data-theme='dark'] [data-astryx-theme] {
   color-scheme: dark;
 }
 
+html.theme-transition [data-astryx-theme],
+html.theme-transition [data-astryx-theme] * {
+  transition-duration: var(--duration-medium-max);
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: var(--ease-standard);
+}
+
 [data-astryx-theme='stone'] {
   display: flex;
   flex-direction: column;

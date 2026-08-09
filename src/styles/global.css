@@ -452,13 +452,21 @@ button:focus-visible {
 
 .featured-publications-section .content-card {
   display: grid;
-  grid-row: span 3;
+  grid-row: span 4;
   grid-template-rows: subgrid;
   row-gap: var(--spacing-3);
 }
 
 .featured-publications-section .card-content {
   display: contents;
+}
+
+.featured-publications-section .card-kicker {
+  display: contents;
+}
+
+.featured-publications-section .card-kicker > :first-child {
+  justify-self: start;
 }
 
 .content-card {

@@ -1,8 +1,10 @@
 import {
   CommandPalette,
+  CommandPaletteFooter,
   CommandPaletteInput,
 } from '@astryxdesign/core/CommandPalette';
 import { IconButton } from '@astryxdesign/core/IconButton';
+import { Kbd } from '@astryxdesign/core/Kbd';
 import type {
   SearchableItem,
   SearchSource,
@@ -128,8 +130,10 @@ export function SearchPalette() {
           <CommandPaletteInput
             label="Search the site"
             placeholder="Search publications, talks, posts, and pages…"
+            endContent={<Kbd keys="mod+k" />}
           />
         }
+        footer={<CommandPaletteFooter />}
         onValueChange={(url) => window.location.assign(url)}
         renderItem={(item) => (
           <span className="site-search-result">

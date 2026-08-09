@@ -1,5 +1,6 @@
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import { isPdfPath } from './cv';
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
@@ -49,6 +50,14 @@ export const defaultAbout = {
   contactNote: '',
 };
 
+export const defaultCv = {
+  heading: 'Curriculum vitae',
+  introduction: '',
+  pdf: null,
+  presentation: [],
+  externalUrl: '',
+};
+
 export async function getSiteSettings() {
   return {
     ...defaultSiteSettings,
@@ -62,4 +71,14 @@ export async function getHomeContent() {
 
 export async function getAboutContent() {
   return (await reader.singletons.about.read()) ?? defaultAbout;
+}
+
+export async function getCvContent() {
+  const content = await reader.singletons.cv.read();
+
+  return {
+    ...defaultCv,
+    ...(content ?? {}),
+    pdf: isPdfPath(content?.pdf) ? content.pdf : null,
+  };
 }

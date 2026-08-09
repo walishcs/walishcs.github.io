@@ -3,13 +3,13 @@ defaultContributorName: Walis Hian-chi Song
 title: Independent Researcher
 email: walis.hcs@gapp.nthu.edu.tw
 location: Tainan, Taiwan
-socialImage: /images/site/socialImage.jpg
 socialLinks:
   - label: Academia.edu
     url: https://nthu.academia.edu/WalisHCS
   - label: X (Twitter)
     url: https://x.com/walis_hcs
 showAboutPage: true
+showCvPage: true
 showPublicationsPage: true
 showTalksPage: true
 showBlogPage: true

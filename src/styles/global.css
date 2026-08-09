@@ -202,6 +202,10 @@ button:focus-visible {
   display: inline-flex;
 }
 
+.site-search-icon {
+  flex-shrink: 0;
+}
+
 .site-search-result {
   display: grid;
   gap: var(--spacing-1);

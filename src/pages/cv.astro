@@ -1,0 +1,86 @@
+---
+import { Link } from '@astryxdesign/core/Link';
+import { EmptyState } from '@/components/EmptyState';
+import PageHeader from '@/components/PageHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCvContent } from '@/lib/site-content';
+
+const cv = await getCvContent();
+const showEmbeddedPdf = cv.presentation.includes('embed') && Boolean(cv.pdf);
+const showExternalLink =
+  cv.presentation.includes('external') && Boolean(cv.externalUrl);
+const hasCvPresentation = showEmbeddedPdf || showExternalLink;
+---
+
+<BaseLayout
+  title={cv.heading || 'Curriculum vitae'}
+  description={cv.introduction || 'Curriculum vitae.'}
+  searchCategory="CV"
+>
+  <PageHeader
+    eyebrow="Experience"
+    title={cv.heading || 'Curriculum vitae'}
+    description={cv.introduction}
+  />
+  {
+    hasCvPresentation ? (
+      <section class="cv-content" aria-label="Curriculum vitae">
+        <nav class="cv-actions" aria-label="CV links" data-pagefind-ignore>
+          {showEmbeddedPdf && cv.pdf && (
+            <Link
+              className="site-link action-link action-link-secondary"
+              href={cv.pdf}
+              target="_blank"
+              rel="noreferrer"
+              color="inherit"
+              isStandalone
+            >
+              Open PDF
+            </Link>
+          )}
+          {showExternalLink && cv.externalUrl && (
+            <Link
+              className="site-link action-link action-link-primary"
+              href={cv.externalUrl}
+              target="_blank"
+              rel="noreferrer"
+              color="inherit"
+              isStandalone
+            >
+              View external CV
+            </Link>
+          )}
+        </nav>
+        {showEmbeddedPdf && cv.pdf && (
+          <object
+            class="cv-viewer"
+            data={cv.pdf}
+            type="application/pdf"
+            title={`${cv.heading || 'Curriculum vitae'} PDF`}
+            aria-label={`${cv.heading || 'Curriculum vitae'} PDF`}
+            data-pagefind-ignore
+          >
+            <p>
+              This browser cannot display the PDF inline.{' '}
+              <Link
+                className="site-link"
+                href={cv.pdf}
+                target="_blank"
+                rel="noreferrer"
+                hasUnderline
+              >
+                Open the CV PDF
+              </Link>
+              .
+            </p>
+          </object>
+        )}
+      </section>
+    ) : (
+      <EmptyState
+        title="CV not available yet"
+        message="CV details will appear here when they are published."
+      />
+    )
+  }
+</BaseLayout>

@@ -29,7 +29,7 @@ export default config({
   ui: {
     brand: { name: 'Academic Portfolio' },
     navigation: {
-      Pages: ['siteSettings', 'home', 'about'],
+      Pages: ['siteSettings', 'home', 'about', 'cv'],
       Research: ['publications', 'talks', 'projects'],
       Writing: ['blog', 'news'],
       Work: ['services'],
@@ -64,6 +64,11 @@ export default config({
           label: 'Show About page',
           description: 'Include About in the public navigation.',
           defaultValue: true,
+        }),
+        showCvPage: fields.checkbox({
+          label: 'Show CV page',
+          description: 'Include CV in the public navigation and site search.',
+          defaultValue: false,
         }),
         showPublicationsPage: fields.checkbox({
           label: 'Show Publications page',
@@ -178,6 +183,35 @@ export default config({
           itemLabel: (props) => props.value || 'Research interest',
         }),
         contactNote: fields.text({ label: 'Contact note', multiline: true }),
+      },
+    }),
+    cv: singleton({
+      label: 'CV page',
+      path: 'src/content/singletons/cv',
+      format: 'yaml',
+      schema: {
+        heading: fields.text({ label: 'Heading' }),
+        introduction: fields.text({
+          label: 'Introduction',
+          multiline: true,
+        }),
+        pdf: fields.file({
+          label: 'CV PDF',
+          description: 'Upload a PDF file only.',
+          directory: 'public/files/cv',
+          publicPath: '/files/cv/',
+        }),
+        presentation: fields.multiselect({
+          label: 'Presentation options',
+          description:
+            'Choose the embedded PDF viewer, an external link, or both.',
+          options: [
+            { label: 'Embedded PDF', value: 'embed' },
+            { label: 'External link', value: 'external' },
+          ],
+          defaultValue: [],
+        }),
+        externalUrl: fields.url({ label: 'External CV URL' }),
       },
     }),
   },

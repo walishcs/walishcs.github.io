@@ -3,8 +3,6 @@ import { Link } from '@astryxdesign/core/Link';
 import { MobileNav } from '@astryxdesign/core/MobileNav';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const NAV_TRANSITION_MS = 300;
-
 interface NavigationItem {
   href: string;
   label: string;
@@ -26,16 +24,36 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
   const closeNavigation = useCallback(() => {
     if (!isOpen || isClosing) return;
     setIsClosing(true);
-    const duration = window.matchMedia('(prefers-reduced-motion: reduce)')
-      .matches
-      ? 10
-      : NAV_TRANSITION_MS;
-    closeTimerRef.current = setTimeout(() => {
-      setIsOpen(false);
-      setIsClosing(false);
-      closeTimerRef.current = null;
-    }, duration);
+    const themeRoot = document.querySelector<HTMLElement>(
+      '[data-astryx-theme]',
+    );
+    const durationToken = getComputedStyle(
+      themeRoot ?? document.documentElement,
+    )
+      .getPropertyValue('--duration-medium')
+      .trim();
+    const durationValue = Number.parseFloat(durationToken);
+    const duration =
+      durationToken.endsWith('s') && !durationToken.endsWith('ms')
+        ? durationValue * 1000
+        : durationValue;
+    closeTimerRef.current = setTimeout(
+      () => {
+        setIsOpen(false);
+        setIsClosing(false);
+        closeTimerRef.current = null;
+      },
+      Number.isFinite(duration) ? duration : 300,
+    );
   }, [isClosing, isOpen]);
+
+  const finishClosing = useCallback(() => {
+    if (!isClosing) return;
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = null;
+    setIsOpen(false);
+    setIsClosing(false);
+  }, [isClosing]);
 
   useEffect(
     () => () => {
@@ -81,6 +99,7 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
         }
         isOpen={isOpen}
         onOpenChange={(open) => (open ? openNavigation() : closeNavigation())}
+        onAnimationEnd={finishClosing}
         header="Navigation"
         side="end"
       >

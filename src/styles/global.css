@@ -21,6 +21,13 @@ html[data-theme='dark'] [data-astryx-theme] {
   color-scheme: dark;
 }
 
+html.theme-transition [data-astryx-theme],
+html.theme-transition [data-astryx-theme] * {
+  transition-duration: var(--duration-medium-max);
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: var(--ease-standard);
+}
+
 [data-astryx-theme='stone'] {
   display: flex;
   flex-direction: column;
@@ -232,13 +239,13 @@ button:focus-visible {
 }
 
 .mobile-nav-exit::backdrop {
-  animation: mobile-nav-backdrop-out var(--duration-medium) var(--ease-standard)
-    both;
+  animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
+    reverse both;
 }
 
 .mobile-nav-exit > div {
-  animation: mobile-nav-panel-out var(--duration-medium) var(--ease-standard)
-    both;
+  animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
+    reverse both;
 }
 
 @keyframes mobile-nav-backdrop-in {
@@ -249,18 +256,6 @@ button:focus-visible {
 
 @keyframes mobile-nav-panel-in {
   from {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes mobile-nav-backdrop-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes mobile-nav-panel-out {
-  to {
     transform: translateX(100%);
   }
 }
@@ -449,6 +444,21 @@ button:focus-visible {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--spacing-4);
+}
+
+.featured-publications-section .card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.featured-publications-section .content-card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: var(--spacing-3);
+}
+
+.featured-publications-section .card-content {
+  display: contents;
 }
 
 .content-card {

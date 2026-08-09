@@ -382,6 +382,7 @@ const pageTransition: TransitionDirectionalAnimations = {
       const isMode = (value: string | null): value is ThemeMode =>
         value === 'system' || value === 'light' || value === 'dark';
       let preference: ThemeMode = 'system';
+      let themeTransitionTimer: number | undefined;
 
       function resolvedTheme(): 'light' | 'dark' {
         if (preference !== 'system') return preference;
@@ -413,6 +414,41 @@ const pageTransition: TransitionDirectionalAnimations = {
           });
       }
 
+      function applyThemeModeWithTransition() {
+        const reducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches;
+        const themeRoot = document.querySelector<HTMLElement>(
+          '[data-astryx-theme]',
+        );
+        if (!themeRoot || reducedMotion) {
+          applyThemeMode();
+          return;
+        }
+
+        const root = document.documentElement;
+        root.classList.add('theme-transition');
+        void themeRoot.offsetWidth;
+        applyThemeMode();
+
+        if (themeTransitionTimer) window.clearTimeout(themeTransitionTimer);
+        const durationToken = getComputedStyle(themeRoot)
+          .getPropertyValue('--duration-medium-max')
+          .trim();
+        const durationValue = Number.parseFloat(durationToken);
+        const duration =
+          durationToken.endsWith('s') && !durationToken.endsWith('ms')
+            ? durationValue * 1000
+            : durationValue;
+        themeTransitionTimer = window.setTimeout(
+          () => {
+            root.classList.remove('theme-transition');
+            themeTransitionTimer = undefined;
+          },
+          Number.isFinite(duration) ? duration : 400,
+        );
+      }
+
       function initializeThemeToggle() {
         try {
           const storedMode = window.localStorage.getItem('theme-mode');
@@ -431,7 +467,7 @@ const pageTransition: TransitionDirectionalAnimations = {
           const targetTheme = toggle.dataset.targetTheme ?? null;
           if (targetTheme !== 'light' && targetTheme !== 'dark') return;
           preference = targetTheme;
-          applyThemeMode();
+          applyThemeModeWithTransition();
           try {
             window.localStorage.setItem('theme-mode', preference);
           } catch {

@@ -110,6 +110,7 @@ export function SearchPalette() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="site-search-icon"
             aria-hidden="true"
           >
             <circle cx="11" cy="11" r="8" />

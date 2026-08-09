@@ -239,13 +239,13 @@ button:focus-visible {
 }
 
 .mobile-nav-exit::backdrop {
-  animation: mobile-nav-backdrop-out var(--duration-medium) var(--ease-standard)
-    both;
+  animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
+    reverse both;
 }
 
 .mobile-nav-exit > div {
-  animation: mobile-nav-panel-out var(--duration-medium) var(--ease-standard)
-    both;
+  animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
+    reverse both;
 }
 
 @keyframes mobile-nav-backdrop-in {
@@ -256,18 +256,6 @@ button:focus-visible {
 
 @keyframes mobile-nav-panel-in {
   from {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes mobile-nav-backdrop-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes mobile-nav-panel-out {
-  to {
     transform: translateX(100%);
   }
 }

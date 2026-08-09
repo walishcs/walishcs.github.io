@@ -47,14 +47,6 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
     );
   }, [isClosing, isOpen]);
 
-  const finishClosing = useCallback(() => {
-    if (!isClosing) return;
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = null;
-    setIsOpen(false);
-    setIsClosing(false);
-  }, [isClosing]);
-
   useEffect(
     () => () => {
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
@@ -99,7 +91,6 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
         }
         isOpen={isOpen}
         onOpenChange={(open) => (open ? openNavigation() : closeNavigation())}
-        onAnimationEnd={finishClosing}
         header="Navigation"
         side="end"
       >

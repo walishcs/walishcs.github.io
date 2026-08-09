@@ -225,13 +225,14 @@ button:focus-visible {
 }
 
 .mobile-nav-enter::backdrop {
-  animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
-    both;
+  transition: none;
+  animation: mobile-nav-fade-in var(--duration-medium) var(--ease-standard) both;
 }
 
 .mobile-nav-enter > div {
-  animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
-    both;
+  transform: none;
+  transition: none;
+  animation: mobile-nav-fade-in var(--duration-medium) var(--ease-standard) both;
 }
 
 .mobile-nav-exit {
@@ -239,24 +240,27 @@ button:focus-visible {
 }
 
 .mobile-nav-exit::backdrop {
-  animation: mobile-nav-backdrop-in var(--duration-medium) var(--ease-standard)
-    reverse both;
+  transition: none;
+  animation: mobile-nav-fade-out var(--duration-medium) var(--ease-standard)
+    both;
 }
 
 .mobile-nav-exit > div {
-  animation: mobile-nav-panel-in var(--duration-medium) var(--ease-standard)
-    reverse both;
+  transform: none;
+  transition: none;
+  animation: mobile-nav-fade-out var(--duration-medium) var(--ease-standard)
+    both;
 }
 
-@keyframes mobile-nav-backdrop-in {
+@keyframes mobile-nav-fade-in {
   from {
     opacity: 0;
   }
 }
 
-@keyframes mobile-nav-panel-in {
-  from {
-    transform: translateX(100%);
+@keyframes mobile-nav-fade-out {
+  to {
+    opacity: 0;
   }
 }
 

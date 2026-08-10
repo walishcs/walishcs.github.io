@@ -1,6 +1,7 @@
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
 import { isPdfPath } from './cv';
+import { DEFAULT_SITE_THEME } from './site-theme-options';
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
@@ -8,6 +9,7 @@ export const defaultSiteSettings = {
   name: 'Academic Portfolio',
   defaultContributorName: '',
   title: '',
+  theme: DEFAULT_SITE_THEME,
   description:
     'An academic portfolio for research, writing, and professional work.',
   email: '',

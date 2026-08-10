@@ -11,7 +11,7 @@
 
 - Content is English and editor-owned. Do not add sample people, publications, posts, projects, services, news, images, or links.
 - Missing singletons and empty collections must always build successfully and show a useful public empty state.
-- News appears only on Home. Do not add public News or CV routes.
+- News appears only on Home; do not add a public News route. CV is an optional public route controlled by `siteSettings.showCvPage`.
 - Use Astryx components and Stone semantic tokens. Never override Astryx color tokens or hard-code replacement theme colors.
 - Load styles in this order: Astryx reset, Astryx core, Stone, then project CSS. Keep accessible focus states, keyboard operation, responsive layouts, and reduced-motion behavior.
 - Keystatic remains `storage: { kind: 'local' }`. Never add cloud storage, authentication, or production admin routes without explicit approval.
@@ -19,6 +19,7 @@
 ## Astryx AI workflow
 
 - Use the checked-in CLI via `npm run astryx -- …`; it is the source of truth. The remote read-only MCP at `https://astryx.atmeta.com/mcp` is optional discovery support only.
+- Before adding, replacing, or hand-building any UI element, search the Astryx component library with `npm run astryx -- search "<need>" --dense`, then inspect the selected component or template with the CLI. Use the library component when it fits.
 - For UI work follow: `build --dense` → `template --dense` and/or `component --dense` → implementation → `doctor`. Prefer `--json` when consuming output programmatically.
 - Preserve the Astryx-managed block in this file; update it with the CLI instead of editing its generated contents.
 

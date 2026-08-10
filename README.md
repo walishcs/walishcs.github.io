@@ -1,11 +1,11 @@
 # Academic Portfolio
 
-A static academic personal website built with Astro, React 19, Astryx Stone, Markdoc, and Keystatic in local mode.
+A static academic personal website built with Astro, React 19, Astryx Stone, Markdoc, Pagefind, and local-mode Keystatic. Public routes cover Home, About, Publications, Talks, Blog, Projects, Services, and an optional CV page; page visibility is managed in Site settings.
 
 ## Requirements
 
-- Node.js 24 (minimum supported version: 22.13.0)
-- npm 11 or later
+- Node.js `>=22.13.0` (CI uses Node.js 24)
+- npm with lockfile support
 
 ## Development
 
@@ -14,9 +14,17 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:4321` for the website and `http://localhost:4321/keystatic` for the local content editor. Keystatic writes content and uploaded images directly to this repository.
+Open `http://localhost:4321` for the website and `http://localhost:4321/keystatic` for the local content editor. Keystatic stores singleton and collection data under `src/content/` and uploaded assets under `public/`.
 
-No starter content is included. Configure the three page singletons and add collection entries in Keystatic; the public website provides empty states until content exists.
+The public site continues to build when a singleton or collection is empty and displays an appropriate empty state.
+
+## Search preview
+
+Pagefind indexes the production HTML, so search is unavailable during the regular Astro development server. Build the index and run a searchable local preview with:
+
+```sh
+npm run preview:search
+```
 
 ## Validation
 
@@ -35,13 +43,14 @@ npm run astryx -- doctor
 Use the project-local CLI, for example:
 
 ```sh
-npm run astryx -- --dense build "academic publication page"
-npm run astryx -- --dense component Card
-npm run astryx -- --json doctor
+npm run astryx -- search "publication layout" --dense
+npm run astryx -- build "academic publication page" --dense
+npm run astryx -- component Card --dense
+npm run astryx -- doctor
 ```
 
-The CLI is the primary AI interface. The remote Astryx MCP (`https://astryx.atmeta.com/mcp`) is optional and read-only.
+Search the Astryx library before adding or hand-building a UI element. The project-local CLI is the source of truth; the remote Astryx MCP (`https://astryx.atmeta.com/mcp`) is optional and read-only.
 
-## Archive
+## Git workflow and deployment
 
-The previous website is preserved unchanged in `old/`. It is not referenced by the new application and is excluded from deployment.
+Feature work is developed on `template` and merged into `main` through a pull request. Content-only updates made through Keystatic are committed directly to `main`. A push to `main` runs CI and deploys the static `dist/` output to GitHub Pages.

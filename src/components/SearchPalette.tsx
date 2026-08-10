@@ -5,34 +5,12 @@ import {
 } from '@astryxdesign/core/CommandPalette';
 import { IconButton } from '@astryxdesign/core/IconButton';
 import { Kbd } from '@astryxdesign/core/Kbd';
-import type {
-  SearchableItem,
-  SearchSource,
-} from '@astryxdesign/core/Typeahead';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  createPagefindSearchController,
+  type PagefindRuntime,
+} from '@/lib/pagefind-search';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-interface PagefindResultData {
-  url: string;
-  plain_excerpt: string;
-  meta: Record<string, string>;
-}
-
-interface PagefindSearchResult {
-  data(): Promise<PagefindResultData>;
-}
-
-interface PagefindRuntime {
-  search(query: string): Promise<{ results: PagefindSearchResult[] }>;
-}
-
-interface SiteSearchAuxiliaryData {
-  group: string;
-  excerpt: string;
-}
-
-interface SiteSearchItem extends SearchableItem<SiteSearchAuxiliaryData> {}
-
-const RESULT_LIMIT = 12;
 let pagefindRuntime: Promise<PagefindRuntime> | null = null;
 
 function loadPagefind() {
@@ -50,51 +28,38 @@ export function SearchPalette() {
   const [isOpen, setIsOpen] = useState(false);
   const [isUnavailable, setIsUnavailable] = useState(false);
 
-  const searchSource = useMemo<SearchSource<SiteSearchItem>>(
-    () => ({
-      bootstrap: () => [],
-      async search(query) {
-        const trimmedQuery = query.trim();
-        if (!trimmedQuery) return [];
-
-        try {
-          const pagefind = await loadPagefind();
-          const response = await pagefind.search(trimmedQuery);
-          const results = await Promise.all(
-            response.results
-              .slice(0, RESULT_LIMIT)
-              .map((result) => result.data()),
-          );
-          setIsUnavailable(false);
-
-          return results.map((result) => ({
-            id: result.url,
-            label: result.meta.title || result.url,
-            auxiliaryData: {
-              group: result.meta.section || 'Page',
-              excerpt: result.plain_excerpt,
-            },
-          }));
-        } catch {
-          setIsUnavailable(true);
-          return [];
-        }
-      },
-    }),
+  const searchController = useMemo(
+    () =>
+      createPagefindSearchController({
+        loadPagefind,
+        onAvailabilityChange: setIsUnavailable,
+      }),
     [],
+  );
+
+  const prepareSearch = useCallback(() => {
+    void searchController.prepare();
+  }, [searchController]);
+
+  const handleOpenChange = useCallback(
+    (nextIsOpen: boolean) => {
+      if (nextIsOpen) prepareSearch();
+      setIsOpen(nextIsOpen);
+    },
+    [prepareSearch],
   );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
-        setIsOpen(true);
+        handleOpenChange(true);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleOpenChange]);
 
   return (
     <section className="site-search" aria-label="Site search">
@@ -120,12 +85,14 @@ export function SearchPalette() {
           </svg>
         }
         variant="ghost"
-        onClick={() => setIsOpen(true)}
+        onFocus={prepareSearch}
+        onPointerEnter={prepareSearch}
+        onClick={() => handleOpenChange(true)}
       />
       <CommandPalette
         isOpen={isOpen}
-        onOpenChange={setIsOpen}
-        searchSource={searchSource}
+        onOpenChange={handleOpenChange}
+        searchSource={searchController.source}
         input={
           <CommandPaletteInput
             label="Search the site"

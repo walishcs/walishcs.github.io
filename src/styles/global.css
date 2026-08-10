@@ -953,6 +953,7 @@ button:focus-visible {
 }
 
 @media (max-width: 38rem) {
+  .featured-publications-section .card-grid,
   .card-grid,
   .footer-inner {
     grid-template-columns: 1fr;

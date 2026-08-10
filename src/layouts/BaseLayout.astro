@@ -8,6 +8,9 @@ import { ClientRouter } from 'astro:transitions';
 import { Link } from '@astryxdesign/core/Link';
 import '@astryxdesign/core/reset.css';
 import '@astryxdesign/core/astryx.css';
+import '@astryxdesign/theme-chocolate/theme.css';
+import '@astryxdesign/theme-matcha/theme.css';
+import '@astryxdesign/theme-neutral/theme.css';
 import '@astryxdesign/theme-stone/theme.css';
 import '@/styles/global.css';
 
@@ -213,7 +216,7 @@ const pageTransition: TransitionDirectionalAnimations = {
     <script is:inline type="application/ld+json" set:html={serializedJsonLd} />
   </head>
   <body>
-    <ThemeRoot>
+    <ThemeRoot themeName={settings.theme}>
       <Link
         className="site-link skip-link"
         href="#main-content"

@@ -2,7 +2,7 @@
 
 ## Scope and architecture
 
-- This repository is a static academic website built with Astro, React 19, strict TypeScript, Astryx Stone, Markdoc, and local-mode Keystatic.
+- This repository is a static academic website built with Astro, React 19, strict TypeScript, Astryx with CMS-selectable themes, Markdoc, and local-mode Keystatic.
 - Public pages live in `src/pages/`; shared UI lives in `src/components/` and `src/layouts/`; content access belongs in `src/lib/`.
 - Keystatic schemas are defined in `keystatic.config.ts`. Keep collection fields in sync with `src/content.config.ts`, which must continue to use Astro Content Layer `glob()` loaders.
 - `old/` is a read-only archive of the previous website. Do not edit, import, copy, serve, or deploy anything from it.
@@ -12,8 +12,8 @@
 - Content is English and editor-owned. Do not add sample people, publications, posts, projects, services, news, images, or links.
 - Missing singletons and empty collections must always build successfully and show a useful public empty state.
 - News appears only on Home; do not add a public News route. CV is an optional public route controlled by `siteSettings.showCvPage`.
-- Use Astryx components and Stone semantic tokens. Never override Astryx color tokens or hard-code replacement theme colors.
-- Load styles in this order: Astryx reset, Astryx core, Stone, then project CSS. Keep accessible focus states, keyboard operation, responsive layouts, and reduced-motion behavior.
+- Use Astryx components and semantic tokens. Never override Astryx color tokens or hard-code replacement theme colors.
+- Load styles in this order: Astryx reset, Astryx core, supported theme CSS, then project CSS. Keep accessible focus states, keyboard operation, responsive layouts, and reduced-motion behavior.
 - Keystatic remains `storage: { kind: 'local' }`. Never add cloud storage, authentication, or production admin routes without explicit approval.
 
 ## Astryx AI workflow
@@ -25,9 +25,10 @@
 
 ## Git workflow
 
-- For feature updates (UI, components, routes, schemas, dependencies, configuration, or tooling), switch to `template` before making changes and keep the work on that branch. After all required checks pass, commit and push it, open a pull request targeting `main`, and merge only after CI succeeds. Never commit or push feature work directly to `main`.
+- For feature updates (UI, components, routes, schemas, dependencies, configuration, or tooling), switch to `template` before making changes and keep the work on that branch. Commit and push completed feature work there, but do not open a pull request directly from `template` when its editor-owned content differs from `main`.
+- To publish a feature, create a temporary integration branch from the current `origin/main`, cherry-pick only the feature commit(s) from `template`, then open a pull request from that integration branch to `main`. Merge only after CI succeeds, then delete the temporary branch. Never carry template content-removal commits into `main`.
 - For content-only updates made through Keystatic, switch to the current `main` branch first. Commit and push the resulting content and uploaded-asset changes directly to `main`; do not put ordinary site content on `template`.
-- If an intended content change also needs a schema, component, layout, route, configuration, or dependency change, treat it as a feature update and use the template → PR → `main` flow.
+- If an intended content change also needs a schema, component, layout, route, configuration, or dependency change, publish the feature through the integration-branch flow first, then apply the editor-owned content separately on `main`.
 
 ## Commands and completion checks
 
@@ -38,7 +39,7 @@
 
 <!-- ASTRYX:START -->
 
-Astryx v0.2.0 · 154 components
+Astryx v0.3.0 · 155 components
 CLI: run every command as `npx astryx <cmd>` (shown below as `astryx ...`).
 
 SETUP (once, in your app entry e.g. main.tsx) — without these, components render unstyled:
@@ -63,7 +64,7 @@ RULES:
 
 MORE CLI:
 search "<query>" find any component / hook / doc / template / block
-component --list 154 components by category
+component --list 155 components by category
 template --list page + block recipes
 docs <topic> color, elevation, icons, illustrations, internationalization, layout, migration, motion, principles, shape, spacing, styling, theme, tokens, typography
 swizzle <Name> eject component source for deep customization

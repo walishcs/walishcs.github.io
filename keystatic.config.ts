@@ -1,4 +1,8 @@
 import { collection, config, fields, singleton } from '@keystatic/core';
+import {
+  DEFAULT_SITE_THEME,
+  SITE_THEME_OPTIONS,
+} from './src/lib/site-theme-options';
 
 const linkFields = fields.object({
   label: fields.text({ label: 'Label', validation: { isRequired: true } }),
@@ -48,6 +52,13 @@ export default config({
             'Use “Family, Given” or “Given Family”. This name can be inserted and emphasized in Publications and Talks.',
         }),
         title: fields.text({ label: 'Academic title or role' }),
+        theme: fields.select({
+          label: 'Site theme',
+          description:
+            'Choose the Astryx theme used across the public website after the next build.',
+          options: [...SITE_THEME_OPTIONS],
+          defaultValue: DEFAULT_SITE_THEME,
+        }),
         description: fields.text({
           label: 'SEO description',
           multiline: true,

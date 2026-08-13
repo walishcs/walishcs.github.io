@@ -2,6 +2,8 @@
 import { ThemeRoot } from '@/components/ThemeRoot';
 import { MobileNavigation } from '@/components/MobileNavigation';
 import { SearchPalette } from '@/components/SearchPalette';
+import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
+import { normalizeGoogleAnalyticsMeasurementId } from '@/lib/google-analytics';
 import { getSiteSettings } from '@/lib/site-content';
 import type { TransitionDirectionalAnimations } from 'astro';
 import { ClientRouter } from 'astro:transitions';
@@ -41,6 +43,9 @@ const {
   searchCategory,
 } = Astro.props;
 const pageTitle = title ? `${title} · ${settings.name}` : settings.name;
+const googleAnalyticsMeasurementId = import.meta.env.PROD
+  ? normalizeGoogleAnalyticsMeasurementId(settings.googleAnalyticsMeasurementId)
+  : null;
 const canonical = new URL(canonicalPath, Astro.site ?? Astro.url.origin).href;
 const socialImage = image
   ? new URL(image, Astro.site ?? Astro.url.origin).href
@@ -201,6 +206,11 @@ const pageTransition: TransitionDirectionalAnimations = {
       content={socialImage ? 'summary_large_image' : 'summary'}
     />
     <title>{pageTitle}</title>
+    {
+      googleAnalyticsMeasurementId && (
+        <GoogleAnalytics measurementId={googleAnalyticsMeasurementId} />
+      )
+    }
     <ClientRouter />
     <script is:inline>
       (() => {

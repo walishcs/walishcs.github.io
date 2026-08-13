@@ -3,6 +3,7 @@ import {
   DEFAULT_SITE_THEME,
   SITE_THEME_OPTIONS,
 } from './src/lib/site-theme-options';
+import { googleAnalyticsMeasurementIdField } from './src/keystatic/google-analytics-field';
 
 const linkFields = fields.object({
   label: fields.text({ label: 'Label', validation: { isRequired: true } }),
@@ -66,6 +67,7 @@ export default config({
         }),
         email: fields.text({ label: 'Email' }),
         location: fields.text({ label: 'Location' }),
+        googleAnalyticsMeasurementId: googleAnalyticsMeasurementIdField(),
         socialImage: imageField('Default social image', 'site'),
         socialLinks: fields.array(linkFields, {
           label: 'Social links',

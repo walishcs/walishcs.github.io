@@ -15,6 +15,7 @@
 - Use Astryx components and semantic tokens. Never override Astryx color tokens or hard-code replacement theme colors.
 - Load styles in this order: Astryx reset, Astryx core, supported theme CSS, then project CSS. Keep accessible focus states, keyboard operation, responsive layouts, and reduced-motion behavior.
 - Keystatic remains `storage: { kind: 'local' }`. Never add cloud storage, authentication, or production admin routes without explicit approval.
+- Google Analytics is optional and configured by `siteSettings.googleAnalyticsMeasurementId`; keep it production-only, and never emit manual page views alongside GA4 history-change measurement.
 
 ## Astryx AI workflow
 

@@ -1,0 +1,21 @@
+---
+interface Props {
+  measurementId: string;
+}
+
+const { measurementId } = Astro.props;
+const scriptSource = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
+const configuration = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', ${JSON.stringify(measurementId)});
+`;
+---
+
+<!--
+  GA4 Enhanced Measurement handles Astro ClientRouter history changes.
+  Do not also emit manual page_view events, which would double-count visits.
+-->
+<script async is:inline src={scriptSource}></script>
+<script is:inline set:html={configuration} />

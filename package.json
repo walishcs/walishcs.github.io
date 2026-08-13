@@ -29,6 +29,7 @@
     "@astryxdesign/theme-matcha": "0.3.0",
     "@astryxdesign/theme-neutral": "0.3.0",
     "@astryxdesign/theme-stone": "0.3.0",
+    "@keystar/ui": "0.9.2",
     "@keystatic/astro": "5.2.0",
     "@keystatic/core": "0.6.4",
     "@stylexjs/stylex": "0.19.0",

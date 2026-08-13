@@ -14,6 +14,7 @@ export const defaultSiteSettings = {
     'An academic portfolio for research, writing, and professional work.',
   email: '',
   location: '',
+  googleAnalyticsMeasurementId: '',
   socialImage: null,
   socialLinks: [],
   showAboutPage: true,

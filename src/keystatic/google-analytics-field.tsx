@@ -2,8 +2,8 @@ import { fields } from '@keystatic/core';
 import { TextLink } from '@keystar/ui/link';
 import { VStack } from '@keystar/ui/layout';
 import {
-  GOOGLE_ANALYTICS_MEASUREMENT_ID_PATTERN,
   GOOGLE_ANALYTICS_TAG_ID_HELP_URL,
+  OPTIONAL_GOOGLE_ANALYTICS_MEASUREMENT_ID_PATTERN,
 } from '@/lib/google-analytics';
 
 export function googleAnalyticsMeasurementIdField() {
@@ -13,7 +13,7 @@ export function googleAnalyticsMeasurementIdField() {
       'Optional. Enter a GA4 ID beginning with G-. Analytics loads only on the production website.',
     validation: {
       pattern: {
-        regex: GOOGLE_ANALYTICS_MEASUREMENT_ID_PATTERN,
+        regex: OPTIONAL_GOOGLE_ANALYTICS_MEASUREMENT_ID_PATTERN,
         message: 'Enter a GA4 measurement ID such as G-XXXXXXXXXX.',
       },
     },

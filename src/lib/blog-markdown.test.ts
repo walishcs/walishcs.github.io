@@ -1,7 +1,7 @@
-import { Markdown } from '@astryxdesign/core/Markdown';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import { BlogMarkdown } from '../components/BlogMarkdown';
 import { prepareBlogMarkdown } from './blog-markdown';
 
 describe('prepareBlogMarkdown', () => {
@@ -26,9 +26,8 @@ describe('prepareBlogMarkdown', () => {
 
   it('renders article structure with Astryx Markdown', () => {
     const html = renderToStaticMarkup(
-      createElement(Markdown, {
-        headingLevelStart: 1,
-        children: '## Section\n\n- Bullet\n\n1. Numbered',
+      createElement(BlogMarkdown, {
+        body: '## Section\n\n- Bullet\n\n1. Numbered',
       }),
     );
 

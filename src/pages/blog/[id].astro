@@ -1,6 +1,6 @@
 ---
-import { Markdown } from '@astryxdesign/core/Markdown';
 import type { CollectionEntry } from 'astro:content';
+import { BlogMarkdown } from '@/components/BlogMarkdown';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { prepareBlogMarkdown } from '@/lib/blog-markdown';
 import { getPublishedPosts } from '@/lib/collections';
@@ -58,12 +58,6 @@ const jsonLd = {
         <img class="detail-cover" src={post.data.cover} alt="" />
       )
     }
-    <Markdown
-      className="blog-markdown"
-      contentWidth="var(--reading-width)"
-      headingLevelStart={1}
-      autolink="gfm"
-      children={body}
-    />
+    <BlogMarkdown body={body} />
   </article>
 </BaseLayout>

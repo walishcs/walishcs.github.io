@@ -1,6 +1,10 @@
 name: Walis Hian-chi Song
 defaultContributorName: Walis Hian-chi Song
 title: Independent Researcher
+theme: stone
+description: >-
+  Walis Hian-chi Song is an independent linguist specializing in Seediq, Atayal,
+  Austronesian historical linguistics, language change, and reconstruction.
 email: walis.hcs@gapp.nthu.edu.tw
 location: Tainan, Taiwan
 googleAnalyticsMeasurementId: G-QRQB7BNNB8
@@ -15,4 +19,4 @@ showPublicationsPage: true
 showTalksPage: true
 showBlogPage: true
 showProjectsPage: true
-showServicesPage: true
+showServicesPage: false

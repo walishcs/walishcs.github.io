@@ -358,7 +358,11 @@ export default config({
           itemLabel: (props) => props.value || 'Tag',
         }),
         cover: imageField('Cover image', 'blog'),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({
+          label: 'Body',
+          description:
+            'The title is displayed automatically. Start article sections with Heading 2.',
+        }),
       },
     }),
     projects: collection({

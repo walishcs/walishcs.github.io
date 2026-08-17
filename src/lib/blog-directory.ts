@@ -1,5 +1,7 @@
 export type BlogDirectoryMode = 'tag' | 'year';
 
+export const DEFAULT_BLOG_DIRECTORY_MODE: BlogDirectoryMode = 'year';
+
 export interface BlogDirectoryPost {
   href: string;
   title: string;

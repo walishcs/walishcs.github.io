@@ -6,13 +6,16 @@ import {
 import { useMemo, useState } from 'react';
 import { ContentCardGrid } from '@/components/ContentCardGrid';
 import {
+  DEFAULT_BLOG_DIRECTORY_MODE,
   groupBlogPosts,
   type BlogDirectoryMode,
   type BlogDirectoryPost,
 } from '@/lib/blog-directory';
 
 export function BlogDirectory({ posts }: { posts: BlogDirectoryPost[] }) {
-  const [mode, setMode] = useState<BlogDirectoryMode>('tag');
+  const [mode, setMode] = useState<BlogDirectoryMode>(
+    DEFAULT_BLOG_DIRECTORY_MODE,
+  );
   const groups = useMemo(() => groupBlogPosts(posts, mode), [mode, posts]);
 
   return (

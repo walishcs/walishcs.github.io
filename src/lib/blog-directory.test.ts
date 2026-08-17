@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { groupBlogPosts, type BlogDirectoryPost } from './blog-directory';
+import {
+  DEFAULT_BLOG_DIRECTORY_MODE,
+  groupBlogPosts,
+  type BlogDirectoryPost,
+} from './blog-directory';
 
 const posts: BlogDirectoryPost[] = [
   {
@@ -37,6 +41,10 @@ const posts: BlogDirectoryPost[] = [
 ];
 
 describe('blog directory grouping', () => {
+  it('defaults to grouping posts by year', () => {
+    expect(DEFAULT_BLOG_DIRECTORY_MODE).toBe('year');
+  });
+
   it('uses only the first tag, sorts groups, and leaves untagged last', () => {
     const groups = groupBlogPosts(posts, 'tag');
 

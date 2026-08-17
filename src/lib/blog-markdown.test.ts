@@ -26,11 +26,10 @@ describe('prepareBlogMarkdown', () => {
 
   it('renders article structure with Astryx Markdown', () => {
     const html = renderToStaticMarkup(
-      createElement(
-        Markdown,
-        { headingLevelStart: 1 },
-        '## Section\n\n- Bullet\n\n1. Numbered',
-      ),
+      createElement(Markdown, {
+        headingLevelStart: 1,
+        children: '## Section\n\n- Bullet\n\n1. Numbered',
+      }),
     );
 
     expect(html).toContain('<h2');

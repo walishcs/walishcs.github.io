@@ -1,6 +1,8 @@
 ---
+import { parseOutlineFromMarkdown } from '@astryxdesign/core/Outline';
 import type { CollectionEntry } from 'astro:content';
 import { BlogMarkdown } from '@/components/BlogMarkdown';
+import { BlogOutline } from '@/components/BlogOutline';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { prepareBlogMarkdown } from '@/lib/blog-markdown';
 import { getPublishedPosts } from '@/lib/collections';
@@ -17,6 +19,8 @@ interface Props {
 
 const { post } = Astro.props;
 const body = prepareBlogMarkdown(post.body, post.data.title);
+const contentId = 'blog-article-content';
+const hasOutline = parseOutlineFromMarkdown(body).length > 0;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -35,29 +39,40 @@ const jsonLd = {
   jsonLd={jsonLd}
   searchCategory="Blog"
 >
-  <article>
-    <header class="detail-header">
-      <p class="eyebrow">Writing</p>
-      <h1 class="detail-title">{post.data.title}</h1>
-      <time class="detail-meta" datetime={post.data.publishedAt}>
-        {formatDate(post.data.publishedAt)}
-      </time>
-      {post.data.excerpt && <p class="detail-summary">{post.data.excerpt}</p>}
+  <article class="blog-article-layout">
+    <section class="blog-article-content" aria-label="Article content">
+      <header class="detail-header">
+        <p class="eyebrow">Writing</p>
+        <h1 class="detail-title">{post.data.title}</h1>
+        <time class="detail-meta" datetime={post.data.publishedAt}>
+          {formatDate(post.data.publishedAt)}
+        </time>
+        {post.data.excerpt && <p class="detail-summary">{post.data.excerpt}</p>}
+        {
+          post.data.tags.length > 0 && (
+            <ul class="tag-list" aria-label="Tags">
+              {post.data.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          )
+        }
+      </header>
       {
-        post.data.tags.length > 0 && (
-          <ul class="tag-list" aria-label="Tags">
-            {post.data.tags.map((tag) => (
-              <li>{tag}</li>
-            ))}
-          </ul>
+        post.data.cover && (
+          <img class="detail-cover" src={post.data.cover} alt="" />
         )
       }
-    </header>
+      <section id={contentId} aria-label="Article body">
+        <BlogMarkdown body={body} />
+      </section>
+    </section>
     {
-      post.data.cover && (
-        <img class="detail-cover" src={post.data.cover} alt="" />
+      hasOutline && (
+        <aside class="blog-outline-panel" data-pagefind-ignore>
+          <BlogOutline body={body} contentId={contentId} client:load />
+        </aside>
       )
     }
-    <BlogMarkdown body={body} />
   </article>
 </BaseLayout>

@@ -3,12 +3,14 @@ import { Card } from '@astryxdesign/core/Card';
 import { Heading } from '@astryxdesign/core/Heading';
 import { Link } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
+import { parseInlineEmphasis } from '../lib/inline-emphasis';
 
 export interface ContentCardItem {
   href: string;
   title: string;
   summary?: string;
   meta?: string;
+  metaHasEmphasis?: boolean;
   badge?: string;
 }
 
@@ -29,7 +31,15 @@ export function ContentCardGrid({ items }: { items: ContentCardItem[] }) {
               ) : null}
               {item.meta ? (
                 <Text type="supporting" color="secondary">
-                  {item.meta}
+                  {item.metaHasEmphasis
+                    ? parseInlineEmphasis(item.meta).map((part, index) =>
+                        part.italic ? (
+                          <em key={index}>{part.text}</em>
+                        ) : (
+                          part.text
+                        ),
+                      )
+                    : item.meta}
                 </Text>
               ) : null}
             </div>

@@ -40,10 +40,15 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
     closeTimerRef.current = setTimeout(
       () => {
         setIsOpen(false);
-        setIsClosing(false);
+        // Keep the completed fade applied during MobileNav's native close delay.
+        // Removing it here would expose the library's slide-out transition.
         closeTimerRef.current = null;
       },
-      Number.isFinite(duration) ? duration : 300,
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 0
+        : Number.isFinite(duration)
+          ? duration
+          : 300,
     );
   }, [isClosing, isOpen]);
 
@@ -82,13 +87,7 @@ export function MobileNavigation({ items }: { items: NavigationItem[] }) {
         isIconOnly
       />
       <MobileNav
-        className={
-          isOpen
-            ? isClosing
-              ? 'mobile-nav-exit'
-              : 'mobile-nav-enter'
-            : undefined
-        }
+        className={isClosing ? 'mobile-nav-exit' : 'mobile-nav-enter'}
         isOpen={isOpen}
         onOpenChange={(open) => (open ? openNavigation() : closeNavigation())}
         header="Navigation"

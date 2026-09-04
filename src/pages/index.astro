@@ -67,6 +67,7 @@ const secondary =
                 href: `/publications/${entry.id}/`,
                 title: entry.data.title,
                 meta: `${publicationYearLabel(entry.data.year)}${entry.data.venue ? ` · ${entry.data.venue}` : ''}`,
+                metaHasEmphasis: true,
                 badge: labelFromSlug(entry.data.type),
               }))}
             />

@@ -773,65 +773,56 @@ button:focus-visible {
   font-size: 0.875rem;
 }
 
-.blog-directory,
-.blog-directory-groups,
-.blog-directory-group,
+.blog-directory {
+  grid-template-columns: minmax(0, var(--reading-width)) minmax(14rem, 1fr);
+}
+
+.blog-directory-results,
+.blog-directory-sidebar {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.blog-directory-heading {
+  padding-block-end: var(--spacing-4);
+  border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.blog-directory-sidebar {
+  padding-inline-start: var(--spacing-6);
+  border-inline-start: var(--border-width) solid var(--color-border);
+}
+
+.blog-post-row {
+  padding-inline: 0;
+  padding-block: var(--spacing-6);
+}
+
+.blog-directory-mobile {
+  display: none;
+}
+
+.blog-tag-link {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 48rem) {
+  .blog-directory {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .blog-directory-sidebar {
+    display: none;
+  }
+
+  .blog-directory-mobile {
+    display: block;
+    min-width: 0;
+  }
+}
+
 .cv-content {
   display: grid;
-}
-
-.blog-directory {
-  gap: var(--spacing-6);
-}
-
-.blog-directory-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-}
-
-.blog-directory-controls p,
-.blog-directory-group h2 {
-  margin: 0;
-}
-
-.blog-directory-controls p {
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-semibold);
-}
-
-.blog-directory-index ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-2) var(--spacing-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.blog-directory-index a {
-  color: var(--color-accent);
-  font-weight: var(--font-weight-semibold);
-}
-
-.blog-directory-groups {
-  gap: var(--spacing-8);
-}
-
-.blog-directory-group {
-  scroll-margin-block-start: calc(var(--size-element-lg) + var(--spacing-8));
-  gap: var(--spacing-4);
-}
-
-.blog-directory-group h2 {
-  padding-block-end: var(--spacing-2);
-  border-block-end: calc(var(--border-width) * 2) solid var(--color-accent);
-  font-family: var(--font-family-heading);
-}
-
-.cv-content {
   gap: var(--spacing-5);
 }
 
@@ -1000,11 +991,6 @@ button:focus-visible {
 
   .footer-links {
     justify-content: flex-start;
-  }
-
-  .blog-directory-controls {
-    align-items: stretch;
-    flex-direction: column;
   }
 
   .cv-actions > a {

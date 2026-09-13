@@ -7,6 +7,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { prepareBlogMarkdown } from '@/lib/blog-markdown';
 import { getPublishedPosts } from '@/lib/collections';
 import { formatDate } from '@/lib/format';
+import { Link } from '@astryxdesign/core/Link';
+import { normalizeTags, tagHref } from '@/lib/blog-directory';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
+const tags = normalizeTags(post.data.tags);
 const body = prepareBlogMarkdown(post.body, post.data.title);
 const contentId = 'blog-article-content';
 const hasOutline = parseOutlineFromMarkdown(body).length > 0;
@@ -49,10 +52,14 @@ const jsonLd = {
         </time>
         {post.data.excerpt && <p class="detail-summary">{post.data.excerpt}</p>}
         {
-          post.data.tags.length > 0 && (
+          tags.length > 0 && (
             <ul class="tag-list" aria-label="Tags">
-              {post.data.tags.map((tag) => (
-                <li>{tag}</li>
+              {tags.map((tag) => (
+                <li>
+                  <Link href={tagHref(tag)} hasUnderline>
+                    {tag}
+                  </Link>
+                </li>
               ))}
             </ul>
           )

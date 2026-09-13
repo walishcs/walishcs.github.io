@@ -23,7 +23,7 @@ describe('blog directory rendering', () => {
     expect(html).toContain('dateTime="2026-06-01"');
     expect(html).toContain('&lt;unsafe&gt;');
     expect(html).toContain(`href="${tagHref('Second')}"`);
-    expect(html).toContain('aria-pressed="true"');
+    expect(html).toContain('aria-current="true"');
     expect(html).not.toContain('First tag');
   });
   it('provides empty-state copy without requiring content', () => {

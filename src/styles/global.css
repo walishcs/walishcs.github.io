@@ -774,13 +774,28 @@ button:focus-visible {
 }
 
 .blog-directory {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+  grid-template-columns: minmax(0, var(--reading-width)) minmax(14rem, 1fr);
 }
 
 .blog-directory-results,
 .blog-directory-sidebar {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.blog-directory-heading {
+  padding-block-end: var(--spacing-4);
+  border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.blog-directory-sidebar {
+  padding-inline-start: var(--spacing-6);
+  border-inline-start: var(--border-width) solid var(--color-border);
+}
+
+.blog-post-row {
+  padding-inline: 0;
+  padding-block: var(--spacing-6);
 }
 
 .blog-directory-mobile {

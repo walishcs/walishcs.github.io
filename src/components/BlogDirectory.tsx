@@ -1,4 +1,3 @@
-import { Button } from '@astryxdesign/core/Button';
 import { Collapsible, CollapsibleGroup } from '@astryxdesign/core/Collapsible';
 import { Heading } from '@astryxdesign/core/Heading';
 import { Grid } from '@astryxdesign/core/Grid';
@@ -53,58 +52,69 @@ export function BlogDirectory({
         gap={3}
         aria-labelledby={`${id}-${location}-archive`}
       >
-        <Heading level={2} id={`${id}-${location}-archive`}>
+        <Heading
+          level={4}
+          accessibilityLevel={2}
+          id={`${id}-${location}-archive`}
+        >
           Archive
         </Heading>
-        <Button
-          label={`All posts (${posts.length})`}
-          variant={month ? 'ghost' : 'secondary'}
-          aria-pressed={!month}
-          onClick={() => setMonth('')}
-        />
+        <List density="compact" aria-label="All dates">
+          <ListItem
+            label="All posts"
+            endContent={<Text type="supporting">{posts.length}</Text>}
+            isSelected={!month}
+            onClick={() => setMonth('')}
+          />
+        </List>
         <CollapsibleGroup
           type="multiple"
           defaultValue={archive[0] ? [archive[0].year] : []}
           chevronPosition="start"
-          hasDividers
+          density="compact"
         >
           {archive.map((year) => (
             <Collapsible
               key={year.year}
               value={year.year}
               trigger={
-                <Text weight="semibold">
-                  {year.year} ({year.count})
-                </Text>
+                <HStack width="100%" hAlign="between" vAlign="center" gap={2}>
+                  <Text type="label">{year.year}</Text>
+                  <Text type="supporting">{year.count}</Text>
+                </HStack>
               }
             >
-              <VStack gap={1} paddingInlineStart={4}>
-                {year.months.map((entry) => (
-                  <Button
-                    key={entry.value}
-                    label={`${entry.label} (${entry.count})`}
-                    variant={month === entry.value ? 'secondary' : 'ghost'}
-                    aria-pressed={month === entry.value}
-                    onClick={() => setMonth(entry.value)}
-                  />
-                ))}
+              <VStack paddingInlineStart={4}>
+                <List density="compact" aria-label={`${year.year} months`}>
+                  {year.months.map((entry) => (
+                    <ListItem
+                      key={entry.value}
+                      label={entry.label}
+                      endContent={<Text type="supporting">{entry.count}</Text>}
+                      isSelected={month === entry.value}
+                      onClick={() => setMonth(entry.value)}
+                    />
+                  ))}
+                </List>
               </VStack>
             </Collapsible>
           ))}
         </CollapsibleGroup>
       </VStack>
       <VStack as="section" gap={3} aria-labelledby={`${id}-${location}-tags`}>
-        <Heading level={2} id={`${id}-${location}-tags`}>
+        <Heading level={4} accessibilityLevel={2} id={`${id}-${location}-tags`}>
           Tags
         </Heading>
         {tags.length ? (
           <>
             <TextInput
               label="Search tags"
+              isLabelHidden
+              placeholder="Search tags…"
               value={query}
               onChange={setQuery}
               hasClear
-              size="sm"
+              size="md"
             />
             <HStack
               wrap="wrap"
@@ -121,7 +131,10 @@ export function BlogDirectory({
                   hasUnderline={activeTag === tag.label}
                   aria-current={activeTag === tag.label ? 'page' : undefined}
                 >
-                  {tag.label} ({tag.count})
+                  {tag.label}{' '}
+                  <Text type="supporting" color="secondary">
+                    {tag.count}
+                  </Text>
                 </Link>
               ))}
             </HStack>
@@ -141,7 +154,7 @@ export function BlogDirectory({
   );
 
   return (
-    <Grid className="blog-directory" gap={8} align="start">
+    <Grid className="blog-directory" gap={10} align="start">
       <aside
         className="blog-directory-mobile"
         aria-label="Blog navigation"
@@ -162,12 +175,19 @@ export function BlogDirectory({
             Back to all blog posts
           </Link>
         )}
-        <Heading level={2} id={`${id}-results`}>
-          {monthLabel}
-        </Heading>
-        <Text as="p" color="secondary" role="status" aria-live="polite">
-          {visiblePosts.length} {visiblePosts.length === 1 ? 'post' : 'posts'}
-        </Text>
+        <HStack
+          hAlign="between"
+          vAlign="center"
+          gap={3}
+          className="blog-directory-heading"
+        >
+          <Heading level={4} accessibilityLevel={2} id={`${id}-results`}>
+            {monthLabel}
+          </Heading>
+          <Text type="supporting" role="status" aria-live="polite">
+            {visiblePosts.length} {visiblePosts.length === 1 ? 'post' : 'posts'}
+          </Text>
+        </HStack>
         {visiblePosts.length ? (
           <List
             hasDividers
@@ -177,22 +197,35 @@ export function BlogDirectory({
             {visiblePosts.map((post) => (
               <ListItem
                 key={post.href}
+                className="blog-post-row"
                 label={
-                  <Heading level={3}>
-                    <Link href={post.href} color="inherit" hasUnderline>
-                      {post.title}
-                    </Link>
-                  </Heading>
-                }
-                description={
-                  <VStack gap={3} paddingBlockStart={2}>
+                  <VStack gap={3}>
                     <Text type="supporting">
                       <time dateTime={post.publishedAt}>
                         {post.formattedDate}
                       </time>
                     </Text>
+                    <Heading level={2} accessibilityLevel={3}>
+                      <Link
+                        href={post.href}
+                        color="inherit"
+                        className="site-link"
+                      >
+                        {post.title}
+                      </Link>
+                    </Heading>
+                  </VStack>
+                }
+                description={
+                  <VStack gap={3} paddingBlockStart={2}>
                     {post.summary && (
-                      <Text as="p" color="secondary">
+                      <Text
+                        as="p"
+                        type="body"
+                        size="lg"
+                        color="secondary"
+                        textWrap="pretty"
+                      >
                         {post.summary}
                       </Text>
                     )}
@@ -204,7 +237,7 @@ export function BlogDirectory({
                             href={tagHref(tag)}
                             size="sm"
                             className="blog-tag-link"
-                            hasUnderline
+                            color="secondary"
                           >
                             {tag}
                           </Link>

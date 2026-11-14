@@ -36,7 +36,7 @@ export default config({
     navigation: {
       Pages: ['siteSettings', 'home', 'about', 'cv'],
       Research: ['publications', 'talks', 'projects'],
-      Writing: ['blog', 'news'],
+      Writing: ['blog', 'blogSeries', 'news'],
       Work: ['services'],
     },
   },
@@ -363,6 +363,28 @@ export default config({
           description:
             'The title is displayed automatically. Start article sections with Heading 2.',
         }),
+      },
+    }),
+    blogSeries: collection({
+      label: 'Blog series',
+      slugField: 'title',
+      path: 'src/content/blog-series/*',
+      format: 'yaml',
+      schema: {
+        title: fields.slug({ name: { label: 'Title' } }),
+        posts: fields.array(
+          fields.relationship({
+            label: 'Post',
+            collection: 'blog',
+            validation: { isRequired: true },
+          }),
+          {
+            label: 'Posts in reading order',
+            description:
+              'Select and reorder posts from first to last. Each post may belong to one series only. Previous and next links skip unpublished or deleted posts.',
+            itemLabel: (props) => props.value || 'Select a post',
+          },
+        ),
       },
     }),
     projects: collection({

@@ -3,23 +3,30 @@ import { parseOutlineFromMarkdown } from '@astryxdesign/core/Outline';
 import type { CollectionEntry } from 'astro:content';
 import { BlogMarkdown } from '@/components/BlogMarkdown';
 import { BlogOutline } from '@/components/BlogOutline';
+import { BlogSeriesNavigation } from '@/components/BlogSeriesNavigation';
+import type { BlogSeriesNavigation as SeriesNavigation } from '@/lib/blog-series';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { prepareBlogMarkdown } from '@/lib/blog-markdown';
-import { getPublishedPosts } from '@/lib/collections';
+import { getBlogSeriesNavigation, getPublishedPosts } from '@/lib/collections';
 import { formatDate } from '@/lib/format';
 import { Link } from '@astryxdesign/core/Link';
 import { normalizeTags, tagHref } from '@/lib/blog-directory';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
-  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+  const seriesNavigation = await getBlogSeriesNavigation(posts);
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post, navigation: seriesNavigation.get(post.id) },
+  }));
 }
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  navigation?: SeriesNavigation;
 }
 
-const { post } = Astro.props;
+const { post, navigation } = Astro.props;
 const tags = normalizeTags(post.data.tags);
 const body = prepareBlogMarkdown(post.body, post.data.title);
 const contentId = 'blog-article-content';
@@ -73,6 +80,7 @@ const jsonLd = {
       <section id={contentId} aria-label="Article body">
         <BlogMarkdown body={body} />
       </section>
+      <BlogSeriesNavigation navigation={navigation} />
     </section>
     {
       hasOutline && (

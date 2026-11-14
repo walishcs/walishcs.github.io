@@ -18,6 +18,12 @@ Open `http://localhost:4321` for the website and `http://localhost:4321/keystati
 
 The public site continues to build when a singleton or collection is empty and displays an appropriate empty state.
 
+## Blog series
+
+In local Keystatic, open **Writing → Blog series**, create a series, select its posts, and arrange them from first to last. Each post can appear only once and belong to one series. Article pages automatically show the series title, position, and previous/next article links in that order.
+
+Drafts, future-dated posts, and deleted references are skipped. Unassigned articles and series with fewer than two public posts show no series navigation. No series content is required to build the site. Series files are editor-owned YAML under `src/content/blog-series/`; update them on `main` after the feature is published.
+
 ## Search preview
 
 Pagefind indexes the production HTML, so search is unavailable during the regular Astro development server. Build the index and run a searchable local preview with:

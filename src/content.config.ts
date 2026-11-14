@@ -84,6 +84,17 @@ const blog = defineCollection({
   }),
 });
 
+const blogSeries = defineCollection({
+  loader: glob({
+    pattern: '**/*.{yaml,yml}',
+    base: './src/content/blog-series',
+  }),
+  schema: z.object({
+    title: z.string(),
+    posts: z.array(z.string().nullable()).default([]),
+  }),
+});
+
 const talks = defineCollection({
   loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/talks' }),
   schema: z.object({
@@ -139,6 +150,7 @@ export const collections = {
   publications,
   talks,
   blog,
+  blogSeries,
   projects,
   services,
   news,

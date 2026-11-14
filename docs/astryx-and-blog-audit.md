@@ -1,6 +1,6 @@
 # Astryx upgrade and blog navigation audit
 
-Reviewed on 2026-11-14. This change upgrades dependencies and records the navigation design; it does not add series fields or change editor-owned content.
+Reviewed on 2026-11-14. The dependency upgrade is followed by an implementation of the series navigation described below. Editor-owned content is unchanged.
 
 ## Upgrade
 
@@ -27,7 +27,7 @@ Potential additions are `InfoTip` for persistent explanatory help, `ScrollableAr
 
 `useOutlineFromDOM` is also discoverable in the new CLI. Its documentation explicitly recommends `useOutlineFromMarkdown` when the source is a Markdown string, as it is here; changing hooks would not improve this site's article outline.
 
-## Blog navigation findings
+## Blog navigation findings before implementation
 
 The blog schema in `keystatic.config.ts` and `src/content.config.ts` contains title, excerpt, publication date, draft status, tags, cover, and article body. It has no series, ordering, previous-post, or next-post fields. The detail route renders tags, article content, and an in-page outline; it does not render links between articles. Tags and month filters in `BlogDirectory` group articles but do not establish a reading order.
 
@@ -35,14 +35,14 @@ This audit concerns available functionality. The `template` branch has no blog e
 
 The CLI's build/search results do not provide a dedicated article-series pager. `Pagination` takes a page number and an `onChange` callback; its API does not provide article destinations. For static cross-page navigation, use `Link` with real `href` values and `rel="prev"` / `rel="next"`, composed with `VStack`, `HStack` or `Grid` and `Text` inside a semantic `nav`. This works without client hydration and preserves opening links in a new tab.
 
-## Recommended implementation using existing packages
+## Implemented navigation using existing packages
 
-Add a local Keystatic `blogSeries` collection with a title and an ordered array of `fields.relationship({ collection: 'blog', label: 'Post' })`. The installed Keystatic version already supports relationship fields, which store a referenced entry slug. An editor selects posts and arranges them in reading order in one place. Derive both neighboring links from this list, avoiding contradictory previous/next pointers stored on separate posts.
+The implementation adds a local Keystatic `blogSeries` collection with a title and an ordered array of `fields.relationship({ collection: 'blog', label: 'Post' })`. The installed Keystatic version already supports relationship fields, which store a referenced entry slug. An editor selects posts and arranges them in reading order in one place. Derive both neighboring links from this list, avoiding contradictory previous/next pointers stored on separate posts.
 
-Keep the Astro schema synchronized with a Content Layer `glob()` loader for the series files. Resolve series membership in `src/lib/`, then pass only the neighboring public article titles and URLs to the detail page. Start with one series per article; reject duplicate entries and membership in multiple series with a clear validation error. Supporting multiple series later would require explicit navigation context.
+The Astro schema uses a Content Layer `glob()` loader for the series files. `src/lib/blog-series.ts` resolves series membership; `src/lib/collections.ts` supplies only published posts. The detail page receives the neighboring public article titles and URLs. Duplicate entries and membership in multiple series produce a clear validation error. Supporting multiple series later would require explicit navigation context.
 
 Resolve destinations exclusively against `getPublishedPosts()`, so drafts, future-dated articles, and missing/deleted references cannot produce public titles or links. Preserve the relative order of remaining public posts. Omit the navigation for unassigned articles or series with only one public article; omit the absent side at the beginning/end. Missing series collections must continue to build successfully. Exclude the navigation from Pagefind article text with `data-pagefind-ignore`.
 
 An alternative for fully independent manual links is two optional relationship fields on each article, `previousPost` and `nextPost`. This is smaller but requires editors to maintain reciprocal links and avoid self-links or cycles. An ordered series collection is the preferred model for coherent sequences.
 
-Before implementing, inspect the selected layout components through the CLI. Validate series ordering, boundaries, duplicate membership, missing references, draft/future filtering, empty collections, and server-rendered accessible links. Publish the schema/UI feature through the integration-branch workflow first, then let editors populate series on `main` separately.
+The article footer uses Astryx `VStack`, `Text`, and `Link` inside a semantic `nav`, with no client hydration or additional dependencies. Automated tests cover series ordering, boundaries, duplicate membership, missing references, draft/future filtering, empty collections, and server-rendered accessible links. Publish the schema/UI feature through the integration-branch workflow first, then let editors populate series on `main` separately.

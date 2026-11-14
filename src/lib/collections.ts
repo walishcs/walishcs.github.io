@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { buildBlogSeriesNavigation } from './blog-series';
 import {
   filterPublished,
   groupByYear,
@@ -26,6 +27,15 @@ export async function getPublishedPosts() {
 export async function getProjects() {
   const projects = await getCollection('projects');
   return sortByDateDesc(projects, (entry) => entry.data.startDate);
+}
+
+export async function getBlogSeriesNavigation(
+  publishedPosts: CollectionEntry<'blog'>[],
+) {
+  return buildBlogSeriesNavigation(
+    await getCollection('blogSeries'),
+    publishedPosts,
+  );
 }
 
 export async function getTalks() {
